@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Party Cards</string>
+    <string name="action_settings">Settings</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="start_new_game">Start New Game</string>
+    <string name="how_to_play">How to play</string>
+    <string name="logo">Logo</string>
+    <string name="players">Naming Players</string>
+    <string name="leave_game">Leave Game</string>
+    <string name="leave_game_message">Are you sure you want to leave the game?</string>
+
+    <!-- Start New Game screen -->
+    <string name="point_limit">Point Limit:</string>
+    <string name="max_players">Number of players:</string>
+    <string name="start_game">Start Game</string>
+    <string name="next">Next</string>
+    <string name="cancel">Cancel</string>
+    <string name="start_new_game_point_limit_description">The game is over once a player reaches this score.</string>
+    <string name="start_new_game_max_players_description">How many players will play (includes all players).</string>
+    <string name="blank_point_limit_toast">Please choose the point limit</string>
+    <string name="blank_player_limit_toast">Please complete the number of players</string>
+    <string name="blank_player_name_toast">All players must have a name!</string>
+    <string name="min_players_toast">You need at least 3 players.</string>
+    <string name="max_players_toast">There\'s too many players! The limit is 10.</string>
+
+    <!-- New Round screen -->
+    <string name="round">Round</string>
+    <string name="skip">Continue</string>
+    <string name="its_your_turn">\&apos;s turn!</string>
+    <string name="pass_device">Please pass the phone to</string>
+
+    <!-- In-game screen -->
+    <string name="left">&lt;</string>
+    <string name="right">&gt;</string>
+    <string name="choose">Choose</string>
+    <string name="helperInGame">Choose a card that combines with the question. Tap a card to select it to play.</string>
+
+    <!-- In-game screen - Czar -->
+    <string name="helperInGameCzar">Tap arrows to scroll through cards. Tap a card to choose it as the winner.</string>
+    <string name="helperInGameReview">These are the cards submited by all players this round. Tap arrows to scroll through cards.</string>
+
+    <!-- Player Turn -->
+    <string name="game_winner">You won the game!</string>
+    <string name="round_winner">won this round!</string>
+    <string name="winner">&#9733; (winner)</string>
+
+    <color name="white">#FFFFFF</color>
+    <color name="whiteT">#99FFFFFF</color>
+    <color name="black">#000000</color>
+    <color name="blackT">#99000000</color>
+    <color name="green">#339933</color>
+    <color name="greenT">#99339933</color>
+    <color name="red">#FF0000</color>
+    <color name="redT">#99FF0000</color>
+
+</resources>

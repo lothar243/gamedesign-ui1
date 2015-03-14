@@ -1,0 +1,2 @@
+C:\Users\Jeff\workspace\gamedesign-ui1\app\build\intermediates\classes\debug
+C:\Users\Jeff\workspace\gamedesign-ui1\app\build\intermediates\pre-dexed\debug\support-v4-18.0.0-03d2a791fc6935636cde8425c513df13c348b3d3.jar
