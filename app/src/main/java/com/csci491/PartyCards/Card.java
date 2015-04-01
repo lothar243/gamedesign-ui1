@@ -1,21 +1,33 @@
 package com.csci491.PartyCards;
 
-public abstract class Card {
-	
-	protected String content;
-	
-	/**
-	 * Sets the content, the text, of the card.
-	 * @param content - The text displayed on the card.
-	 */
+// ====================================================================================================================
+// Card.java
+// --------------------------------------------------------------------------------------------------------------------
+// Party Cards: Android Networking Project
+// CSCI-466: Networks
+// Jeff Arends, Lee Curran, Angela Gross, Andrew Meissner
+// Spring 2015
+// --------------------------------------------------------------------------------------------------------------------
+// Basic card class that all cards derive from that simply holds the content inside the card.
+// ====================================================================================================================
+
+public abstract class Card
+{
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // CARD ATTRIBUTES
+	protected String content; // text that's inside the card
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    // GETTERS AND SETTERS FOR CARD
+    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
 	public abstract void setContent(String content);
-	
-	/**
-	 * Returns the content on of the card.
-	 * @return - The content of the card.
-	 */
 	public String getContent() {
 		return this.content;
 	}
-	
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

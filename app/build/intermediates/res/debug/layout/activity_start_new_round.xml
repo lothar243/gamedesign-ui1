@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:orientation="horizontal" >
+
+    <TableLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:stretchColumns="*" >
+
+        <TableRow
+            android:id="@+id/tableRow1"
+            android:layout_width="fill_parent" >
+
+            <TextView
+                android:id="@+id/textView1"
+                android:layout_width="wrap_content"
+                android:layout_height="50dip"
+                android:gravity="right"
+                android:text="@string/round"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+            <TextView
+                android:id="@+id/lblRoundNum"
+                android:layout_width="wrap_content"
+                android:layout_height="50dip"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow2"
+            android:layout_width="fill_parent" >
+
+            <TextView
+                android:id="@+id/textViewPlayerName"
+                android:layout_width="wrap_content"
+                android:layout_height="50dip"
+                android:gravity="right"
+                android:text=""
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+            
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="50dip"
+                android:text="@string/its_your_turn"
+                android:textAppearance="?android:attr/textAppearanceLarge" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/tableRow4"
+            android:layout_width="fill_parent"
+            android:gravity="center" >
+
+            <Button
+                android:id="@+id/buttonSkip"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@color/greenT"
+                android:text="@string/skip" />
+        </TableRow>
+    </TableLayout>
+
+    <TableLayout
+        android:id="@+id/tablePlayers"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:stretchColumns="*" >
+    </TableLayout>
+
+</RelativeLayout><!-- From: file:/C:/Users/evalca/Documents/Android%20Studio%20Projects/gamedesign-ui1/app/src/main/res/layout/activity_start_new_round.xml -->

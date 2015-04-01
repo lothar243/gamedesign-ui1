@@ -1,9 +1,7 @@
 package com.csci491.PartyCards;
 
 import java.util.ArrayList;
-
 import com.csci491.PartyCards.R;
-
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Point;
@@ -20,19 +18,38 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class PlayerConfigActivity extends Activity {
-	
+// ====================================================================================================================
+// PlayerConfigActivity.java
+// --------------------------------------------------------------------------------------------------------------------
+// Party Cards: Android Networking Project
+// CSCI-466: Networks
+// Jeff Arends, Lee Curran, Angela Gross, Andrew Meissner
+// Spring 2015
+// --------------------------------------------------------------------------------------------------------------------
+// Handles the UI listeners and other logic associated with the PlayerConfigActivity
+// ====================================================================================================================
+
+public class PlayerConfigActivity extends Activity
+{
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // ===============================================================================================================
+    // ONCREATE()
+    // ---------------------------------------------------------------------------------------------------------------
+    // Prepares layout of the PlayerConfigActivity
+    // ===============================================================================================================
 	@SuppressWarnings("deprecation")
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		
+	public void onCreate(Bundle savedInstanceState)
+    {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_player_config);
 		
 		// Find Table layout defined in XML
 		final TableLayout tl = (TableLayout) findViewById(R.id.Table1);
+
 		// Create new rows to be added.
-		for (int i = 0; i < Globals.getPlayers().size(); i++) {
+		for (int i = 0; i < Globals.getPlayers().size(); i++)
+        {
 			TableRow tr = new TableRow(this);
 			tr.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
 			// Add controls to row
@@ -41,19 +58,23 @@ public class PlayerConfigActivity extends Activity {
 			// Add row to TableLayout
 			// tr.setBackgroundResource(R.drawable.sf_gradient_03);
 			tl.addView(tr, new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
-			
 		}
+
 		// Create StartNewGame button
 		Button buttonStartNewGame = new Button(this);
 		buttonStartNewGame.setText("Start Game");
 		buttonStartNewGame.setBackgroundColor(getBaseContext().getResources().getColor(R.color.greenT));
 		
-		buttonStartNewGame.setOnClickListener(new OnClickListener() {
-			public void onClick(View v) {
-				for (int i = 0; i < Globals.getPlayers().size(); i++) {
+		buttonStartNewGame.setOnClickListener(new OnClickListener()
+        {
+			public void onClick(View v)
+            {
+				for (int i = 0; i < Globals.getPlayers().size(); i++)
+                {
 					TableRow r = (TableRow) tl.getChildAt(i);
 					EditText et = (EditText) r.getChildAt(0);
-					if (et.getText().toString().length() == 0) {
+					if (et.getText().toString().length() == 0)
+                    {
 						Toast.makeText(getBaseContext(), R.string.blank_player_name_toast, Toast.LENGTH_SHORT).show();
 						return;
 					}
@@ -69,21 +90,30 @@ public class PlayerConfigActivity extends Activity {
 				finish();
 			}
 		});
+
 		tl.addView(buttonStartNewGame, new TableLayout.LayoutParams(TableLayout.LayoutParams.FILL_PARENT, TableLayout.LayoutParams.WRAP_CONTENT));
 		
 		// Deal out cards to each player
 		System.out.println("Dealing out the cards...");
 		
-		for (int i = 0; i < Globals.getHandSize(); i++) {
-			for (int j = 0; j < Globals.getPlayers().size() - 1; j++) {
+		for (int i = 0; i < Globals.getHandSize(); i++)
+        {
+			for (int j = 0; j < Globals.getPlayers().size() - 1; j++)
 				Globals.getPlayers().get(j).draw();
-			}
 		}
+
 		System.out.println("Cards successfully dealt!");
-		
 	}
-	
-	private TextView CreateEditText(int i) {
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // ===============================================================================================================
+    // CREATEEDITTEXT()
+    // ---------------------------------------------------------------------------------------------------------------
+    // Add edit text and player number
+    // ===============================================================================================================
+	private TextView CreateEditText(int i)
+    {
 		EditText editText = new EditText(getApplicationContext());
 		editText.setTextAppearance(getApplicationContext(), android.R.style.TextAppearance_Medium);
 		editText.setText("Player " + i);
@@ -99,22 +129,35 @@ public class PlayerConfigActivity extends Activity {
 		
 		return editText;
 	}
-	
-	private Spinner CreateSpinner(int i) {
+
+    // ===============================================================================================================
+    // CREATESPINNER()
+    // ---------------------------------------------------------------------------------------------------------------
+    // Create spinner for choosing player options
+    // ===============================================================================================================
+	private Spinner CreateSpinner(int i)
+    {
 		Spinner spinner = new Spinner(this);
 		ArrayList<String> spinnerArray = new ArrayList<String>();
+
 		// First player is always you
-		if (i == 0) {
+		if (i == 0)
+        {
 			spinnerArray.add("YOU");
 			spinner.setEnabled(false);
-		} else {
-			
+		}
+        else
+        {
 			spinnerArray.add("COMPUTER");
 			spinnerArray.add("HUMAN");
 		}
+
 		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
 		spinner.setAdapter(spinnerArrayAdapter);
 		spinner.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+
 		return spinner;
 	}
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

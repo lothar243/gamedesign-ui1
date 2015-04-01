@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="fill_parent" >
+
+    <TableLayout
+        android:id="@+id/Table1"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" >
+    </TableLayout>
+
+</ScrollView><!-- From: file:/C:/Users/evalca/Documents/Android%20Studio%20Projects/gamedesign-ui1/app/src/main/res/layout/activity_player_config.xml -->

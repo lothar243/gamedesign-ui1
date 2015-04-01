@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content" >
+
+    <TableRow
+        android:id="@+id/tableRow1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" >
+
+        <TextView
+            android:id="@+id/textViewQuestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textAppearance="?android:attr/textAppearanceMedium" />
+    </TableRow>
+
+    <TextView
+        android:id="@+id/textViewHelper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/helperInGame"
+        android:textAppearance="?android:attr/textAppearanceSmall" />
+
+    <LinearLayout
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_marginLeft="2dp"
+        android:layout_marginRight="2dp"
+        android:background="@drawable/bg"
+        android:orientation="horizontal" >
+
+        <Button
+            android:id="@+id/buttonLeft"
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_weight=".2"
+            android:text="@string/left" />
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="fill_parent" >
+
+            <Button
+                android:id="@+id/buttonCard"
+                android:layout_width="200dip"
+                android:layout_height="fill_parent"
+                android:layout_centerHorizontal="true"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:background="@color/whiteT"
+                android:text=""
+                android:textColor="@color/black" />
+
+            <Button
+                android:id="@+id/buttonSubmit"
+                android:layout_width="200dip"
+                android:layout_height="50dip"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:background="@color/green"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip"
+                android:text="@string/choose"
+                android:textColor="@color/white"
+                android:visibility="gone" />
+
+            <TextView
+                android:id="@+id/textViewAditionalInfo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="55dp"
+                android:paddingLeft="15dip"
+                android:paddingRight="15dip"
+                android:textColor="@color/white"
+                android:visibility="gone" />
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/buttonRight"
+            android:layout_width="0dip"
+            android:layout_height="fill_parent"
+            android:layout_gravity="center"
+            android:layout_marginBottom="20dp"
+            android:layout_marginTop="20dp"
+            android:layout_weight=".2"
+            android:text="@string/right" />
+    </LinearLayout>
+
+</TableLayout><!-- From: file:/C:/Users/evalca/Documents/Android%20Studio%20Projects/gamedesign-ui1/app/src/main/res/layout/activity_ingame.xml -->

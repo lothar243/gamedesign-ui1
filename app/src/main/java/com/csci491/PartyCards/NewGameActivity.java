@@ -1,9 +1,7 @@
 package com.csci491.PartyCards;
 
 import java.util.Collections;
-
 import com.csci491.PartyCards.R;
-
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -12,15 +10,30 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.NumberPicker;
-import android.widget.TextView;
-import android.widget.Toast;
 
-public class NewGameActivity extends Activity {
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
+// ====================================================================================================================
+// NewGameActivity.java
+// --------------------------------------------------------------------------------------------------------------------
+// Party Cards: Android Networking Project
+// CSCI-466: Networks
+// Jeff Arends, Lee Curran, Angela Gross, Andrew Meissner
+// Spring 2015
+// --------------------------------------------------------------------------------------------------------------------
+// Handles the UI listeners and other logic associated with the NewGameActivity
+// ====================================================================================================================
 
+public class NewGameActivity extends Activity
+{
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // ===============================================================================================================
+    // ONCREATE()
+    // ---------------------------------------------------------------------------------------------------------------
+    // Prepares layout of the NewGameActivity
+    // ===============================================================================================================
+	public void onCreate(Bundle savedInstanceState)
+    {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_start_new_game);
 		
@@ -30,31 +43,34 @@ public class NewGameActivity extends Activity {
 
 		Button buttonNext = (Button) findViewById(R.id.buttonNext);
 		buttonNext.setOnClickListener(nextListener);
-		
-		
-		configurePickers();
 
+		configurePickers();
 	}
 
-	private void createGame() {
-
+    // ===============================================================================================================
+    // CREATEGAME()
+    // ---------------------------------------------------------------------------------------------------------------
+    // Creates players to set up the game
+    // ===============================================================================================================
+	private void createGame()
+    {
 		System.out.println("Score Limit: " + Globals.getPointLimit());
 		System.out.println("Num Players: " + Globals.getNumPlayers());
 
 		// creating players
 		System.out.println("Creating the players...");
 
-		for (int i = 0; i < Globals.getNumPlayers(); i++) {
-			if (i == 0) {
-				// First player is always "You"
+		for (int i = 0; i < Globals.getNumPlayers(); i++)
+        {
+            // first player is always "You"
+			if (i == 0)
 				Globals.getPlayers().add(new Player(i, "You", true, false));
-			} else if (i == Globals.getNumPlayers() - 1) {
-				// last player is by default Czar
+            // last player is by default Czar
+            else if (i == Globals.getNumPlayers() - 1)
 				Globals.getPlayers().add(new Player(i, "Player " + (i + 1), true, true));
-			} else {
-				// other players
+            // other players
+            else
 				Globals.getPlayers().add(new Player(i, "Player " + (i + 1), true, false));
-			}
 		}
 
 		System.out.println("Players successfully created!");
@@ -62,10 +78,15 @@ public class NewGameActivity extends Activity {
 		Intent intent = new Intent(NewGameActivity.this, PlayerConfigActivity.class);
 		startActivity(intent);
 		// finish();
-
 	}
 
-	private void createCards() {
+    // ===============================================================================================================
+    // CREATECARDS()
+    // ---------------------------------------------------------------------------------------------------------------
+    // Creates cards and shuffles them
+    // ===============================================================================================================
+	private void createCards()
+    {
 		Globals.getCardMaker().setContext(this);
 		Globals.setWhiteCards(Globals.getCardMaker().readWhiteCards());
 		Globals.setBlackCards(Globals.getCardMaker().readBlackCards());
@@ -77,8 +98,14 @@ public class NewGameActivity extends Activity {
 		System.out.println("Num White Cards: " + Globals.getWhiteCards().size());
 		System.out.println("Num Black Cards: " + Globals.getBlackCards().size());
 	}
-	
-	private void configurePickers(){
+
+    // ===============================================================================================================
+    // CONFIGUREPICKERS()
+    // ---------------------------------------------------------------------------------------------------------------
+    // Sets min-max number of players
+    // ===============================================================================================================
+	private void configurePickers()
+    {
 		NumberPicker numberPickerPlayers = (NumberPicker) findViewById(R.id.numberPickerPlayers);
 		NumberPicker numberPickerPointLimit = (NumberPicker) findViewById(R.id.numberPickerPointLimit);
 		numberPickerPlayers.setMinValue(3);
@@ -90,34 +117,56 @@ public class NewGameActivity extends Activity {
 		numberPickerPointLimit.setDescendantFocusability(NumberPicker.FOCUS_BLOCK_DESCENDANTS);
 	}
 
-	private void showAlert(String message) {
+    // ===============================================================================================================
+    // SHOWALERT()
+    // ---------------------------------------------------------------------------------------------------------------
+    // Prepares layout of the InGameActivity
+    // ===============================================================================================================
+	private void showAlert(String message)
+    {
 		AlertDialog.Builder builder = new AlertDialog.Builder(NewGameActivity.this);
 		builder.setTitle(message);
 		// Add the buttons
-		builder.setNeutralButton("Ok", new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int id) {
-			}
+		builder.setNeutralButton("Ok", new DialogInterface.OnClickListener()
+        {
+			public void onClick(DialogInterface dialog, int id) {}
 		});
 
 		// Create the AlertDialog
 		AlertDialog dialog = builder.create();
 		dialog.show();
 	}
-	
-	// ========================================================================
-	// BUTTON LISTENERS
-	// ========================================================================
-	
-	private OnClickListener cancelListener = new OnClickListener() {
-		public void onClick(View v) {
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    // BUTTON LISTENERS
+    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    // ===============================================================================================================
+    // CLICK -> CANCELLISTENER
+    // ---------------------------------------------------------------------------------------------------------------
+    // What happens if we click the "cancel button" on the navigation
+    // ===============================================================================================================
+	private OnClickListener cancelListener = new OnClickListener()
+    {
+		public void onClick(View v)
+        {
 			Intent intent = new Intent(NewGameActivity.this, MainActivity.class);
 			startActivity(intent);
 			finish();
 		}
 	};
-	
-	private OnClickListener nextListener = new OnClickListener() {
-		public void onClick(View v) {
+
+    // ===============================================================================================================
+    // CLICK -> NEXTLISTENER
+    // ---------------------------------------------------------------------------------------------------------------
+    // What happens if we click the "next button" on the navigation
+    // ===============================================================================================================
+	private OnClickListener nextListener = new OnClickListener()
+    {
+		public void onClick(View v)
+        {
 			// find controls
 			NumberPicker numberPickerPlayers = (NumberPicker) findViewById(R.id.numberPickerPlayers);
 			NumberPicker numberPickerPointLimit = (NumberPicker) findViewById(R.id.numberPickerPointLimit);
@@ -131,7 +180,7 @@ public class NewGameActivity extends Activity {
 			createCards();
 			createGame();
 		}
-
 	};
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }
