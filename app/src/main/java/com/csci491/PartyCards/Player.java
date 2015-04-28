@@ -1,9 +1,10 @@
 package com.csci491.PartyCards;
 
-import java.util.ArrayList;
-import java.util.Collections;
 import android.app.Activity;
 import android.content.Context;
+
+import java.util.ArrayList;
+import java.util.Collections;
 
 // ====================================================================================================================
 // Player.java

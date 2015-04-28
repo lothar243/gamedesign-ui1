@@ -17,13 +17,18 @@
         <TableRow
             android:id="@+id/tableRow1"
             android:layout_width="fill_parent" >
-
             <Button
-                android:id="@+id/buttonStart"
+                android:id="@+id/buttonStartMultiplayer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/greenT"
+                android:text="@string/multiplayer" />
+            <Button
+                android:id="@+id/buttonStartSinglePlayer"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/greenT"                
-                android:text="@string/start_new_game" />
+                android:text="@string/singleplayer" />
         </TableRow>
 
         <TableRow

@@ -1,7 +1,5 @@
 package com.csci491.PartyCards;
 
-import java.util.Collections;
-import com.csci491.PartyCards.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -11,6 +9,8 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.NumberPicker;
+
+import java.util.Collections;
 
 // ====================================================================================================================
 // NewGameActivity.java

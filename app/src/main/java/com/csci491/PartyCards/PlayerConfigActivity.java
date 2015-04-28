@@ -1,7 +1,5 @@
 package com.csci491.PartyCards;
 
-import java.util.ArrayList;
-import com.csci491.PartyCards.R;
 import android.app.Activity;
 import android.content.Intent;
 import android.graphics.Point;
@@ -17,6 +15,8 @@ import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import java.util.ArrayList;
 
 // ====================================================================================================================
 // PlayerConfigActivity.java
@@ -154,7 +154,7 @@ public class PlayerConfigActivity extends Activity
 
 		ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<String>(this, android.R.layout.simple_spinner_dropdown_item, spinnerArray);
 		spinner.setAdapter(spinnerArrayAdapter);
-		spinner.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.FILL_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
+		spinner.setLayoutParams(new TableRow.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT));
 
 		return spinner;
 	}

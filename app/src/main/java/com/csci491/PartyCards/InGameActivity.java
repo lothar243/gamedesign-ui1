@@ -1,6 +1,5 @@
 package com.csci491.PartyCards;
 
-import com.csci491.PartyCards.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -70,7 +69,7 @@ public class InGameActivity extends Activity
 		
 		// display card #
 		TextView textViewAditionalInfo = (TextView) findViewById(R.id.textViewAditionalInfo);
-		textViewAditionalInfo.setVisibility(0);
+		textViewAditionalInfo.setVisibility(View.VISIBLE);
 		textViewAditionalInfo.setText(Globals.getIndexWhiteCard() + 1 + " / 7");
 		
 		// set listeners on navigation

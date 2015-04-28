@@ -30,51 +30,57 @@ public final class R {
         public static final int logo=0x7f020002;
     }
     public static final class id {
-        public static final int Table1=0x7f09000b;
-        public static final int action_leavegame=0x7f090021;
-        public static final int buttonCancel=0x7f09001b;
+        public static final int Table1=0x7f09000d;
+        public static final int action_leavegame=0x7f090023;
+        public static final int action_settings=0x7f090024;
+        public static final int buttonCancel=0x7f09001d;
         public static final int buttonCard=0x7f090004;
-        public static final int buttonContinue=0x7f090010;
+        public static final int buttonContinue=0x7f090012;
         public static final int buttonLeft=0x7f090003;
-        public static final int buttonNext=0x7f09001c;
+        public static final int buttonNext=0x7f09001e;
         public static final int buttonRight=0x7f090007;
-        public static final int buttonSkip=0x7f09001f;
-        public static final int buttonStart=0x7f090008;
+        public static final int buttonSkip=0x7f090021;
+        public static final int buttonStartMultiplayer=0x7f090009;
+        public static final int buttonStartSinglePlayer=0x7f09000a;
         public static final int buttonSubmit=0x7f090005;
-        public static final int imageViewLogo=0x7f09000a;
-        public static final int lblRoundNum=0x7f09001d;
-        public static final int numberPickerPlayers=0x7f090013;
-        public static final int numberPickerPointLimit=0x7f090019;
-        public static final int tableLayout1=0x7f09000c;
-        public static final int tablePlayers=0x7f090020;
+        public static final int imageViewLogo=0x7f09000c;
+        public static final int lblRoundNum=0x7f09001f;
+        public static final int multiplayerListView=0x7f090008;
+        public static final int numberPickerPlayers=0x7f090015;
+        public static final int numberPickerPointLimit=0x7f09001b;
+        public static final int tableLayout1=0x7f09000e;
+        public static final int tablePlayers=0x7f090022;
         public static final int tableRow1=0x7f090000;
-        public static final int tableRow2=0x7f09000e;
-        public static final int tableRow3=0x7f090009;
-        public static final int tableRow4=0x7f090014;
-        public static final int tableRow5=0x7f090016;
-        public static final int tableRow6=0x7f090018;
-        public static final int tableRow7=0x7f09001a;
-        public static final int textView1=0x7f090017;
-        public static final int textView2=0x7f090015;
-        public static final int textView3=0x7f090011;
-        public static final int textView4=0x7f090012;
+        public static final int tableRow2=0x7f090010;
+        public static final int tableRow3=0x7f09000b;
+        public static final int tableRow4=0x7f090016;
+        public static final int tableRow5=0x7f090018;
+        public static final int tableRow6=0x7f09001a;
+        public static final int tableRow7=0x7f09001c;
+        public static final int textView1=0x7f090019;
+        public static final int textView2=0x7f090017;
+        public static final int textView3=0x7f090013;
+        public static final int textView4=0x7f090014;
         public static final int textViewAditionalInfo=0x7f090006;
         public static final int textViewHelper=0x7f090002;
-        public static final int textViewPlayerName=0x7f09001e;
-        public static final int textViewPlayerTurnMessage=0x7f09000d;
-        public static final int textViewPlayerTurnWinnerMessage=0x7f09000f;
+        public static final int textViewPlayerName=0x7f090020;
+        public static final int textViewPlayerTurnMessage=0x7f09000f;
+        public static final int textViewPlayerTurnWinnerMessage=0x7f090011;
         public static final int textViewQuestion=0x7f090001;
     }
     public static final class layout {
         public static final int activity_ingame=0x7f030000;
-        public static final int activity_main=0x7f030001;
-        public static final int activity_player_config=0x7f030002;
-        public static final int activity_player_turn=0x7f030003;
-        public static final int activity_start_new_game=0x7f030004;
-        public static final int activity_start_new_round=0x7f030005;
+        public static final int activity_join_multiplayer_game=0x7f030001;
+        public static final int activity_main=0x7f030002;
+        public static final int activity_player_config=0x7f030003;
+        public static final int activity_player_turn=0x7f030004;
+        public static final int activity_start_new_game=0x7f030005;
+        public static final int activity_start_new_round=0x7f030006;
+        public static final int list_item=0x7f030007;
     }
     public static final class menu {
         public static final int ingame=0x7f080000;
+        public static final int menu_join_multiplayer_game=0x7f080001;
     }
     public static final class string {
         public static final int action_settings=0x7f060000;
@@ -98,19 +104,21 @@ public final class R {
         public static final int max_players=0x7f060012;
         public static final int max_players_toast=0x7f060013;
         public static final int min_players_toast=0x7f060014;
-        public static final int next=0x7f060015;
-        public static final int pass_device=0x7f060016;
-        public static final int players=0x7f060017;
-        public static final int point_limit=0x7f060018;
-        public static final int right=0x7f060019;
-        public static final int round=0x7f06001a;
-        public static final int round_winner=0x7f06001b;
-        public static final int skip=0x7f06001c;
-        public static final int start_game=0x7f06001d;
-        public static final int start_new_game=0x7f06001e;
-        public static final int start_new_game_max_players_description=0x7f06001f;
-        public static final int start_new_game_point_limit_description=0x7f060020;
-        public static final int winner=0x7f060021;
+        public static final int multiplayer=0x7f060015;
+        public static final int next=0x7f060016;
+        public static final int pass_device=0x7f060017;
+        public static final int players=0x7f060018;
+        public static final int point_limit=0x7f060019;
+        public static final int right=0x7f06001a;
+        public static final int round=0x7f06001b;
+        public static final int round_winner=0x7f06001c;
+        public static final int singleplayer=0x7f06001d;
+        public static final int skip=0x7f06001e;
+        public static final int start_game=0x7f06001f;
+        public static final int start_new_game_max_players_description=0x7f060020;
+        public static final int start_new_game_point_limit_description=0x7f060021;
+        public static final int title_activity_join_multiplayer_game=0x7f060022;
+        public static final int winner=0x7f060023;
     }
     public static final class style {
         /** 

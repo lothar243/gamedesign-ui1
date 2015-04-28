@@ -2,11 +2,53 @@
 <items version="2" >
 
     <item
-        jar="C:\Program Files (x86)\Android\android-sdk\extras\android\m2repository\com\android\support\support-v4\18.0.0\support-v4-18.0.0.jar"
+        jar="C:\Programming\sdk\extras\android\m2repository\com\android\support\support-v4\18.0.0\support-v4-18.0.0.jar"
         jumboMode="false"
         revision="21.1.2"
         sha1="44ec51e9d395a47aab135e5e1b556c0007442156">
-        <dex dex="C:\Users\Jeff\workspace\gamedesign-ui1\app\build\intermediates\pre-dexed\debug\support-v4-18.0.0-03d2a791fc6935636cde8425c513df13c348b3d3.jar" />
+        <dex dex="C:\Users\Jeff\workspace\gamedesign-ui1\app\build\intermediates\pre-dexed\debug\support-v4-18.0.0-9774fd2603f66007682c3d48f374d29fc4b761c5.jar" />
+    </item>
+    <item
+        jar="C:\Users\Jeff\.gradle\caches\modules-2\files-2.1\com.google.code.ksoap2-android\ksoap2-base\3.3.0\6c7e0691f5b602d7db0739c31c59ad74b88f9b2a\ksoap2-base-3.3.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="6c7e0691f5b602d7db0739c31c59ad74b88f9b2a">
+        <dex dex="C:\Users\Jeff\workspace\gamedesign-ui1\app\build\intermediates\pre-dexed\debug\ksoap2-base-3.3.0-e7d06a568e2aeee435cbe969e2b610b5d8e8e368.jar" />
+    </item>
+    <item
+        jar="C:\Users\Jeff\.gradle\caches\modules-2\files-2.1\com.google.code.ksoap2-android\ksoap2-android\3.3.0\ca23af61438cf7e397e51a3df88b1a5b0bc9ea79\ksoap2-android-3.3.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="ca23af61438cf7e397e51a3df88b1a5b0bc9ea79">
+        <dex dex="C:\Users\Jeff\workspace\gamedesign-ui1\app\build\intermediates\pre-dexed\debug\ksoap2-android-3.3.0-7f40079a146edd64ac8f2e0f755fd8c403f78b8a.jar" />
+    </item>
+    <item
+        jar="C:\Users\Jeff\.gradle\caches\modules-2\files-2.1\net.sourceforge.kxml\kxml\2.2.4\1642506e490548d96984b8370e44257c156097f7\kxml-2.2.4.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="1642506e490548d96984b8370e44257c156097f7">
+        <dex dex="C:\Users\Jeff\workspace\gamedesign-ui1\app\build\intermediates\pre-dexed\debug\kxml-2.2.4-3fe2d438d7f9ed9f9c67fcb5ffd87b9617a2b5f6.jar" />
+    </item>
+    <item
+        jar="C:\Users\Jeff\.gradle\caches\modules-2\files-2.1\net.sourceforge.kobjects\kobjects-j2me\0.0-SNAPSHOT-20040926-2\9246ca92b16c65114a7fb80b906801e06be95305\kobjects-j2me-0.0-SNAPSHOT-20040926-2.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="9246ca92b16c65114a7fb80b906801e06be95305">
+        <dex dex="C:\Users\Jeff\workspace\gamedesign-ui1\app\build\intermediates\pre-dexed\debug\kobjects-j2me-0.0-SNAPSHOT-20040926-2-5da911a1c97da6d0b9076651275a17199dbc288a.jar" />
+    </item>
+    <item
+        jar="C:\Users\Jeff\.gradle\caches\modules-2\files-2.1\com.google.code.ksoap2-android\ksoap2-j2se\3.3.0\3bbcf49f06570312e9014946e3f4065d002efad4\ksoap2-j2se-3.3.0.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="3bbcf49f06570312e9014946e3f4065d002efad4">
+        <dex dex="C:\Users\Jeff\workspace\gamedesign-ui1\app\build\intermediates\pre-dexed\debug\ksoap2-j2se-3.3.0-bbcf51f744e8497834f8ba88f3f3d7bfe7df9bb1.jar" />
+    </item>
+    <item
+        jar="C:\Users\Jeff\.gradle\caches\modules-2\files-2.1\org.xmlpull\xmlpull\1.1.3.3\9b62254da05ce6399a09164362da7b2419de63ca\xmlpull-1.1.3.3.jar"
+        jumboMode="false"
+        revision="21.1.2"
+        sha1="9b62254da05ce6399a09164362da7b2419de63ca">
+        <dex dex="C:\Users\Jeff\workspace\gamedesign-ui1\app\build\intermediates\pre-dexed\debug\xmlpull-1.1.3.3-820861cad9f1b509afa23cc4722eea649f50a08a.jar" />
     </item>
 
 </items>

@@ -1,10 +1,11 @@
 package com.csci491.PartyCards;
 
-import java.util.ArrayList;
-import java.util.Random;
-
 import android.app.Application;
 import android.content.Context;
+import android.widget.ArrayAdapter;
+
+import java.util.ArrayList;
+import java.util.Random;
 
 // ====================================================================================================================
 // Globals.java
@@ -31,7 +32,7 @@ public class Globals extends Application
 	private static ArrayList<WhiteCard> whiteCards = new ArrayList<WhiteCard>();
 	private static ArrayList<Player> players = new ArrayList<Player>();
 	private static ArrayList<WhiteCard> plays = new ArrayList<WhiteCard>();
-	private static String userName = new String();
+	private static String userName;
 	private static int pointLimit;
 	private static int numPlayers;
 	private static int roundNum = ROUND;
@@ -43,6 +44,9 @@ public class Globals extends Application
 	private static boolean isGameWinner;
 	private static String winnerName;
 
+	public static ArrayList<String> multiplayerGameNames;
+	public static int[] multiplayerGameIds;
+	public static ArrayAdapter gameNameAdapter;
     ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // PRIVATE CONSTRUCTOR
@@ -61,7 +65,7 @@ public class Globals extends Application
     {
 		Globals.blackCards = new ArrayList<BlackCard>();
 		Globals.whiteCards = new ArrayList<WhiteCard>();
-		Globals.userName = new String();
+		Globals.userName = "";
 		Globals.roundNum = ROUND;
 		Globals.players = new ArrayList<Player>();
 		Globals.cardMaker = new FileIO();

@@ -1,6 +1,5 @@
 package com.csci491.PartyCards;
 
-import com.csci491.PartyCards.R;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -43,7 +42,7 @@ public class CzarActivity extends Activity
         {
 			// change submit button
 			Button submit = (Button) findViewById(R.id.buttonSubmit);
-			submit.setVisibility(0);
+			submit.setVisibility(View.VISIBLE);
 			submit.setText("Continue");
 
 			setOwnerNameOnCard();
@@ -104,7 +103,7 @@ public class CzarActivity extends Activity
 		textViewAditionalInfo.setVisibility(View.GONE);
 		Player owner = Globals.getPlays().get(Globals.getIndexWhiteCard()).getOwner();
 		textViewAditionalInfo.setText(owner.getName());
-		if (owner.getName() == Globals.getWinnerName())
+		if (owner.getName().equals(Globals.getWinnerName()))
 			textViewAditionalInfo.setText(textViewAditionalInfo.getText() + " " + getResources().getString(R.string.winner));
 	}
 
