@@ -14,7 +14,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
-import android.widget.Toast;
 
 import com.csci491.PartyCards.NetworkTasks.CreateNewGameSoapTask;
 import com.csci491.PartyCards.NetworkTasks.GetGamesSoapTask;
@@ -62,6 +61,11 @@ public class ListMultiplayerGamesActivity extends ListActivity {
                 refreshList();
             }
         });
+
+        if(Globals.userName.equals("")) {
+            promptForUserName();
+        }
+
     }
 
     public void refreshList() {
@@ -76,7 +80,7 @@ public class ListMultiplayerGamesActivity extends ListActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.menu_join_multiplayer_game, menu);
+        //getMenuInflater().inflate(R.menu.menu_join_multiplayer_game, menu);
         return true;
     }
 
@@ -133,4 +137,32 @@ public class ListMultiplayerGamesActivity extends ListActivity {
 
         builder.show();
     }
+
+    public void promptForUserName() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Before you can join, what is your username?");
+
+        // Set up the input
+        final EditText input = new EditText(this);
+        // Specify the type of input expected;
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                Globals.userName = input.getText().toString();
+            }
+        });
+        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+
 }

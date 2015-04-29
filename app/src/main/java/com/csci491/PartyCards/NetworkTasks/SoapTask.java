@@ -14,11 +14,13 @@ import java.io.IOException;
 
 
 public class SoapTask extends AsyncTask <Void, Void, SoapObject>  {
+    public static final String SERVER_IP_ADDRESS = "10.17.134.68";
+
     private static final boolean DEBUG = false;
 
-    public static final String WSDL_URL = "http://184.166.76.115:52244/ws/partyCards?wsdl"; // for manual inspection of the wsdl
+    public static final String WSDL_URL = "http://" + SERVER_IP_ADDRESS + ":52244/ws/partyCards?wsdl"; // for manual inspection of the wsdl
     public static final String NAMESPACE = "http://java.main/";
-    public static final String URL = "http://184.166.76.115:52244/ws/partyCards/";
+    public static final String URL = "http://" + SERVER_IP_ADDRESS + ":52244/ws/partyCards/";
     public static final String METHOD_CREATE_GAME = "createNewGame"; // @WebMethod int createNewGame(String gameName); // returns id of game
     public static final String METHOD_GET_NEW_GAMES = "getGames";
     public static final String METHOD_GET_GAME_NAME = "getGameName";
@@ -44,11 +46,11 @@ public class SoapTask extends AsyncTask <Void, Void, SoapObject>  {
         try {
             httpTransport.call(SOAP_ACTION, envelope);
         } catch (HttpResponseException e) {
-            e.printStackTrace();
+            Log.d("SOAP", "HttpResponseException on " + request.toString());
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.d("SOAP", "IOException on " + request.toString());
         } catch (XmlPullParserException e) {
-            e.printStackTrace();
+            Log.d("SOAP", "HttpResponseException on " + request.toString());
         } //send request
 
         SoapObject result;
@@ -63,7 +65,7 @@ public class SoapTask extends AsyncTask <Void, Void, SoapObject>  {
             result = (SoapObject)envelope.bodyIn;
             return result;
         } catch (Exception e) {
-            e.printStackTrace();
+            Log.d("SOAP", "Error with soap result");
         }
 
         return null;

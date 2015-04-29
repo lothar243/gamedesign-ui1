@@ -2,10 +2,8 @@ package com.csci491.PartyCards;
 
 import android.app.Application;
 import android.content.Context;
-import android.os.Handler;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.Random;
 
 // ====================================================================================================================
@@ -50,6 +48,8 @@ public class Globals extends Application
 	public static String multiplayerGameName;
 	public static boolean multiplayerGameIsActive = false;
 	public static int multiplayerGamePlayerId;
+    public static boolean multiplayerFetchingPlayerNames; // set to true until the first soap request returns
+    public static boolean multiplayerFetchingGameStatus; // set to true until the first soap request returns
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

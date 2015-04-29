@@ -3,10 +3,6 @@ package com.csci491.PartyCards.NetworkTasks;
 import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
-import android.widget.ListView;
-
-import com.csci491.PartyCards.Globals;
-import com.csci491.PartyCards.R;
 
 import org.ksoap2.serialization.SoapObject;
 

@@ -1,6 +1,5 @@
 package com.csci491.PartyCards.NetworkTasks;
 
-import android.os.Message;
 import android.util.Log;
 
 import com.csci491.PartyCards.Globals;

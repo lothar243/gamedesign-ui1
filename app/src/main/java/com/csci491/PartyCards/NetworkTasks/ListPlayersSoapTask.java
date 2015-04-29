@@ -1,9 +1,8 @@
 package com.csci491.PartyCards.NetworkTasks;
 
-import android.os.Handler;
-import android.os.Message;
-import android.util.Log;
 import android.widget.TextView;
+
+import com.csci491.PartyCards.Globals;
 
 import org.ksoap2.serialization.SoapObject;
 
@@ -37,6 +36,7 @@ public class ListPlayersSoapTask extends SoapTask {
 
             //create a string listing each of the player names
             String playerNames = "Players: ";
+            Globals.multiplayerFetchingPlayerNames = false;
             if(numberOfPlayers > 0) {
                 //Log.d("listplayers", playerNames);
                 playerNames += arrayContainer.getProperty(0).toString();

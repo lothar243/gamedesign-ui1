@@ -28,6 +28,7 @@ public class IsGameFormingSoapTask extends SoapTask {
         try {
             // property[0] of result contains an array of the games that are both new and active
 
+            Globals.multiplayerFetchingGameStatus = false;
             Globals.multiplayerGameIsNew = Boolean.valueOf((result.getProperty(0).toString()));
         }
         catch (Exception e) {

@@ -89,8 +89,7 @@ public final class R {
     public static final class menu {
         public static final int ingame=0x7f080000;
         public static final int menu_join_game=0x7f080001;
-        public static final int menu_join_multiplayer_game=0x7f080002;
-        public static final int menu_multiplayer_game=0x7f080003;
+        public static final int menu_multiplayer_game=0x7f080002;
     }
     public static final class string {
         public static final int action_settings=0x7f060000;

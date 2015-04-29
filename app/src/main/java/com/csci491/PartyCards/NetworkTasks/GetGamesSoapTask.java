@@ -4,17 +4,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.Log;
 
-import com.csci491.PartyCards.Globals;
-
 import org.ksoap2.serialization.SoapObject;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 
 public class GetGamesSoapTask extends SoapTask {
     Handler mainThreadHandler;
-    String gameName;
 
     // constructor:
     // mainThreadHandler - a handler back to the UI thread that calls the aSyncTask so that changes can be reflected when we're done here
@@ -52,7 +46,7 @@ public class GetGamesSoapTask extends SoapTask {
 
         }
         catch (Exception e) {
-            Log.e("GetNewGameSoapTaskError", e.getMessage());
+            Log.e("GetNewGameSoapTaskError", "Error retrieving game list");
         }
     }
 

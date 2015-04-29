@@ -1,21 +1,16 @@
 package com.csci491.PartyCards;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
-import android.text.InputType;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import com.csci491.PartyCards.NetworkTasks.CreateNewGameSoapTask;
 import com.csci491.PartyCards.NetworkTasks.IsGameFormingSoapTask;
 import com.csci491.PartyCards.NetworkTasks.JoinGameSoapTask;
 import com.csci491.PartyCards.NetworkTasks.ListPlayersSoapTask;
@@ -26,7 +21,8 @@ public class JoinGameActivity extends Activity {
     TextView playersNames;
     boolean active = true;
     TextView statusTextView;
-
+    Button startGameButton;
+    Button joinGameButton;
 
     Handler UIHandler = new Handler() {
         @Override
@@ -65,78 +61,52 @@ public class JoinGameActivity extends Activity {
         Globals.multiplayerGameId = input.getIntExtra("gameId", -1);
         Globals.multiplayerGameName = input.getStringExtra("gameName");
         TextView titleText = (TextView) findViewById(R.id.textGameName);
-        titleText.setText("" + Globals.multiplayerGameId + ": " + Globals.multiplayerGameName);
-
+        titleText.setText("Game Name: " + Globals.multiplayerGameName);
+        Globals.multiplayerFetchingGameStatus = true;
+        Globals.multiplayerFetchingPlayerNames = true;
         Globals.multiplayerGamePlayerId = -1;
         playersNames = (TextView) findViewById(R.id.textPlayerNames);
+        playersNames.setText("Fetching current players...");
         UIHandler.sendEmptyMessage(0);
         Globals.multiplayerGameIsNew = true;
 
 
         statusTextView = (TextView)findViewById(R.id.textViewStatus);
 
-        final Button joinGameButton = (Button) findViewById(R.id.buttonJoinGame);
+        joinGameButton = (Button) findViewById(R.id.buttonJoinGame);
         joinGameButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(Globals.userName.equals("")) {
-                    promptForUserName();
+                    statusTextView.setText("Error, you have no username");
                 }
-
-
-
-                if(!Globals.userName.equals("")) {
+                else {
                     statusTextView.setText("Joining");
+
 
                     JoinGameSoapTask joinGame = new JoinGameSoapTask(Globals.multiplayerGameId, Globals.userName);
                     joinGame.execute();
-
                 }
-
             }
         });
-        final Button startGameButton = (Button) findViewById(R.id.buttonStartGame);
+        joinGameButton.setVisibility(View.INVISIBLE);
+        startGameButton = (Button) findViewById(R.id.buttonStartGame);
         startGameButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 if(Globals.userName.equals("")) {
-                    promptForUserName();
+                    statusTextView.setText("Error, you have no username");
                 }
+                else {
+                    statusTextView.setText("Starting...");
 
-                statusTextView.setText("Starting...");
-
-                StartGameSoapTask startGame = new StartGameSoapTask(Globals.multiplayerGameId, Globals.userName);
-                startGame.execute();
-
+                    StartGameSoapTask startGame = new StartGameSoapTask(Globals.multiplayerGameId, Globals.userName);
+                    startGame.execute();
+                }
             }
         });
+        startGameButton.setVisibility(View.INVISIBLE);
 
     }
 
-    public void promptForUserName() {
-        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Enter your username");
-
-        // Set up the input
-        final EditText input = new EditText(this);
-        // Specify the type of input expected;
-        input.setInputType(InputType.TYPE_CLASS_TEXT);
-        builder.setView(input);
-
-        // Set up the buttons
-        builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                Globals.userName = input.getText().toString();
-            }
-        });
-        builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.cancel();
-            }
-        });
-
-        builder.show();
-    }
 
     public void refreshGameInfo() {
 
@@ -153,7 +123,33 @@ public class JoinGameActivity extends Activity {
             Intent intent = new Intent(JoinGameActivity.this, MultiplayerGameActivity.class);
             startActivity(intent);
         }
-        statusTextView.setText("Forming: " + Globals.multiplayerGameIsNew + ", your player number: " + Globals.multiplayerGamePlayerId);
+        if(Globals.multiplayerFetchingGameStatus) {
+            // the first soap call has yet to return
+            statusTextView.setText("Fetching game information");
+        }
+        else {
+            joinGameButton.setVisibility(View.VISIBLE);
+            if(Globals.multiplayerGameIsNew) {
+                if (Globals.multiplayerGamePlayerId == -1) {
+                    statusTextView.setText("This game is still forming, you can join!");
+                }
+                else {
+                    statusTextView.setText("You have joined, waiting for the game to start");
+                    joinGameButton.setVisibility(View.INVISIBLE);
+                    startGameButton.setVisibility(View.VISIBLE);
+                }
+            }
+            else {
+                if(Globals.multiplayerGamePlayerId == -1) {
+                    statusTextView.setText("This game is already underway");
+                    joinGameButton.setText("Re-join");
+                }
+                else {
+                    statusTextView.setText("Starting game...");
+                }
+            }
+        }
+
 
     }
 
