@@ -1,14 +1,17 @@
 package com.csci491.PartyCards.NetworkTasks;
 
+import android.os.Handler;
 import android.util.Log;
 
 import org.ksoap2.serialization.SoapObject;
 
 public class CreateNewGameSoapTask extends SoapTask {
+    Handler mainThreadHandler;
     String gameName;
 
-    public CreateNewGameSoapTask(String _gameName) {
+    public CreateNewGameSoapTask(Handler mainThreadHandler, String _gameName) {
         super();
+        this.mainThreadHandler = mainThreadHandler;
         gameName = _gameName;
     }
 
@@ -21,10 +24,11 @@ public class CreateNewGameSoapTask extends SoapTask {
 
     @Override
     protected void onPostExecute(SoapObject result) {
-        // attempt to process the result of the soap call
+        // the soap call is finished, time to update the list
+        GetGamesSoapTask refreshTask = new GetGamesSoapTask(mainThreadHandler);
+        refreshTask.execute();
         try {
-
-            Log.d("CreateNewGameSoapTask", "result of creating new game: " +  result.getProperty(0).toString());
+            Log.d("createnewGameTask", result.getProperty(0).toString());
 
         }
         catch (Exception e) {

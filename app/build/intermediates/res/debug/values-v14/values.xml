@@ -2,7 +2,7 @@
 <resources>
     <!-- From: file:/C:/Users/Jeff/workspace/gamedesign-ui1/app/src/main/res/values-v14/styles.xml -->
     <eat-comment/>
-    <style name="AppBaseTheme" parent="android:Theme.Holo.Light.DarkActionBar">
+    <style name="AppBaseTheme" parent="android:Theme.Holo.Light">
         <!-- API 14 theme customizations can go here. -->
     </style>
 </resources>

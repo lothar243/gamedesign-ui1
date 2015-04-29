@@ -87,11 +87,25 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.csci491.PartyCards.JoinMultiplayerGame"
+            android:name="com.csci491.PartyCards.ListMultiplayerGamesActivity"
             android:label="@string/title_activity_join_multiplayer_game" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.csci491.PartyCards.MainActivity" />
+        </activity>
+        <activity
+            android:name="com.csci491.PartyCards.JoinGameActivity"
+            android:label="@string/title_activity_join_game" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.csci491.PartyCards.ListMultiplayerGamesActivity" />
+        </activity>
+        <activity
+            android:name="com.csci491.PartyCards.MultiplayerGameActivity"
+            android:label="@string/title_activity_multiplayer_game" >
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.csci491.PartyCards.JoinGameActivity" />
         </activity>
     </application>
 

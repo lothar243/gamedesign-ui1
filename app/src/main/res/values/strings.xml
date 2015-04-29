@@ -56,5 +56,14 @@
     <color name="red">#FF0000</color>
     <color name="redT">#99FF0000</color>
     <string name="title_activity_join_multiplayer_game">JoinMultiplayerGame</string>
+    <string name="sampleListText">Sample Text</string>
+    <string name="newMultiplayerGame">Start new game</string>
+    <string name="refresh">Refresh List</string>
+    <string name="title_activity_join_game">JoinGameActivity</string>
+    <string name="joinGameTitle">Joining a game: gametitle</string>
+    <string name="playerNames">Players in this game: Player1, player2, player3, etc</string>
+    <string name="title_activity_multiplayer_game">MultiplayerGameActivity</string>
+    <string name="textButtonJoin">Join</string>
+    <string name="textButtonStartGame">Start game</string>
 
 </resources>

@@ -40,7 +40,7 @@ public class MainActivity extends Activity {
 		final Button buttonStartSingleplayer = (Button) findViewById(R.id.buttonStartSinglePlayer);
 		buttonStartMultiplayer.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
-				Intent intent = new Intent(MainActivity.this, JoinMultiplayerGame.class);
+				Intent intent = new Intent(MainActivity.this, ListMultiplayerGamesActivity.class);
 				startActivity(intent);
 
 			}

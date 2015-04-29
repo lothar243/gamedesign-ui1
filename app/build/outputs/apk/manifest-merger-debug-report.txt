@@ -28,100 +28,112 @@ ADDED from AndroidManifest.xml:11:5
 	android:name
 		ADDED from AndroidManifest.xml:11:22
 uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
-ADDED from AndroidManifest.xml:13:5
+ADDED from AndroidManifest.xml:12:5
 	android:maxSdkVersion
-		ADDED from AndroidManifest.xml:15:9
-	android:name
 		ADDED from AndroidManifest.xml:14:9
+	android:name
+		ADDED from AndroidManifest.xml:13:9
 uses-permission#android.permission.READ_PHONE_STATE
-ADDED from AndroidManifest.xml:16:5
+ADDED from AndroidManifest.xml:15:5
 	android:name
-		ADDED from AndroidManifest.xml:16:22
+		ADDED from AndroidManifest.xml:15:22
 uses-permission#android.permission.READ_EXTERNAL_STORAGE
-ADDED from AndroidManifest.xml:17:5
+ADDED from AndroidManifest.xml:16:5
 	android:maxSdkVersion
-		ADDED from AndroidManifest.xml:19:9
-	android:name
 		ADDED from AndroidManifest.xml:18:9
+	android:name
+		ADDED from AndroidManifest.xml:17:9
 application
-ADDED from AndroidManifest.xml:21:5
+ADDED from AndroidManifest.xml:20:5
 	android:label
-		ADDED from AndroidManifest.xml:24:9
-	android:allowBackup
-		ADDED from AndroidManifest.xml:22:9
-	android:icon
 		ADDED from AndroidManifest.xml:23:9
+	android:allowBackup
+		ADDED from AndroidManifest.xml:21:9
+	android:icon
+		ADDED from AndroidManifest.xml:22:9
 	android:theme
-		ADDED from AndroidManifest.xml:25:9
+		ADDED from AndroidManifest.xml:24:9
 activity#com.csci491.PartyCards.MainActivity
-ADDED from AndroidManifest.xml:26:9
+ADDED from AndroidManifest.xml:25:9
 	android:label
-		ADDED from AndroidManifest.xml:28:13
-	android:name
 		ADDED from AndroidManifest.xml:27:13
+	android:name
+		ADDED from AndroidManifest.xml:26:13
 intent-filter#android.intent.action.MAIN+android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:29:13
+ADDED from AndroidManifest.xml:28:13
 action#android.intent.action.MAIN
-ADDED from AndroidManifest.xml:30:17
+ADDED from AndroidManifest.xml:29:17
 	android:name
-		ADDED from AndroidManifest.xml:30:25
+		ADDED from AndroidManifest.xml:29:25
 category#android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:32:17
+ADDED from AndroidManifest.xml:31:17
 	android:name
-		ADDED from AndroidManifest.xml:32:27
+		ADDED from AndroidManifest.xml:31:27
 activity#com.csci491.PartyCards.NewGameActivity
-ADDED from AndroidManifest.xml:35:9
+ADDED from AndroidManifest.xml:34:9
 	android:label
-		ADDED from AndroidManifest.xml:37:13
-	android:name
 		ADDED from AndroidManifest.xml:36:13
+	android:name
+		ADDED from AndroidManifest.xml:35:13
 intent-filter#android.intent.action.VIEW+android.intent.category.LAUNCHER
-ADDED from AndroidManifest.xml:38:13
+ADDED from AndroidManifest.xml:37:13
 action#android.intent.action.VIEW
-ADDED from AndroidManifest.xml:39:17
+ADDED from AndroidManifest.xml:38:17
 	android:name
-		ADDED from AndroidManifest.xml:39:25
+		ADDED from AndroidManifest.xml:38:25
 activity#com.csci491.PartyCards.PlayerConfigActivity
-ADDED from AndroidManifest.xml:44:9
+ADDED from AndroidManifest.xml:43:9
 	android:label
-		ADDED from AndroidManifest.xml:46:13
-	android:name
 		ADDED from AndroidManifest.xml:45:13
+	android:name
+		ADDED from AndroidManifest.xml:44:13
 activity#com.csci491.PartyCards.NewRoundActivity
-ADDED from AndroidManifest.xml:53:9
+ADDED from AndroidManifest.xml:52:9
 	android:screenOrientation
-		ADDED from AndroidManifest.xml:56:13
-	android:label
 		ADDED from AndroidManifest.xml:55:13
-	android:name
+	android:label
 		ADDED from AndroidManifest.xml:54:13
+	android:name
+		ADDED from AndroidManifest.xml:53:13
 activity#com.csci491.PartyCards.InGameActivity
-ADDED from AndroidManifest.xml:63:9
+ADDED from AndroidManifest.xml:62:9
 	android:label
-		ADDED from AndroidManifest.xml:65:13
-	android:name
 		ADDED from AndroidManifest.xml:64:13
+	android:name
+		ADDED from AndroidManifest.xml:63:13
 activity#com.csci491.PartyCards.PlayerTurnActivity
-ADDED from AndroidManifest.xml:72:9
+ADDED from AndroidManifest.xml:71:9
 	android:label
-		ADDED from AndroidManifest.xml:74:13
-	android:name
 		ADDED from AndroidManifest.xml:73:13
+	android:name
+		ADDED from AndroidManifest.xml:72:13
 activity#com.csci491.PartyCards.CzarActivity
-ADDED from AndroidManifest.xml:81:9
+ADDED from AndroidManifest.xml:80:9
 	android:label
-		ADDED from AndroidManifest.xml:83:13
-	android:name
 		ADDED from AndroidManifest.xml:82:13
-activity#com.csci491.PartyCards.JoinMultiplayerGame
-ADDED from AndroidManifest.xml:90:9
+	android:name
+		ADDED from AndroidManifest.xml:81:13
+activity#com.csci491.PartyCards.ListMultiplayerGamesActivity
+ADDED from AndroidManifest.xml:89:9
 	android:label
-		ADDED from AndroidManifest.xml:92:13
-	android:name
 		ADDED from AndroidManifest.xml:91:13
-meta-data#android.support.PARENT_ACTIVITY
-ADDED from AndroidManifest.xml:93:13
 	android:name
-		ADDED from AndroidManifest.xml:94:17
+		ADDED from AndroidManifest.xml:90:13
+meta-data#android.support.PARENT_ACTIVITY
+ADDED from AndroidManifest.xml:92:13
+	android:name
+		ADDED from AndroidManifest.xml:93:17
 	android:value
-		ADDED from AndroidManifest.xml:95:17
+		ADDED from AndroidManifest.xml:94:17
+activity#com.csci491.PartyCards.JoinGameActivity
+ADDED from AndroidManifest.xml:96:9
+	android:label
+		ADDED from AndroidManifest.xml:98:13
+	android:name
+		ADDED from AndroidManifest.xml:97:13
+activity#com.csci491.PartyCards.MultiplayerGameActivity
+ADDED from AndroidManifest.xml:103:9
+	android:label
+		ADDED from AndroidManifest.xml:105:13
+	android:name
+		ADDED from AndroidManifest.xml:104:13
