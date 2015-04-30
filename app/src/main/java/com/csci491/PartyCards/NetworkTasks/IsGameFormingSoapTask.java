@@ -18,6 +18,7 @@ public class IsGameFormingSoapTask extends SoapTask {
 
     @Override
     protected void onPreExecute() {
+        soapAction = formProperSoapAction(METHOD_IS_GAME_FORMING);
         request = new SoapObject(SoapTask.NAMESPACE, METHOD_IS_GAME_FORMING);
         request.addProperty("arg0", gameId);
     }

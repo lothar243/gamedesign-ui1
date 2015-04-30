@@ -14,7 +14,9 @@ public class StartGameSoapTask extends SoapTask {
 
     @Override
     protected void onPreExecute() {
+        soapAction = formProperSoapAction(METHOD_START_GAME);
         request = new SoapObject(SoapTask.NAMESPACE, METHOD_START_GAME);
         request.addProperty("arg0", gameId);
+
     }
 }

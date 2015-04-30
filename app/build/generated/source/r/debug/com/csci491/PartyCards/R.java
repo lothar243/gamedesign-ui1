@@ -30,23 +30,23 @@ public final class R {
         public static final int logo=0x7f020002;
     }
     public static final class id {
-        public static final int ButtonNewMultiplayerGame=0x7f09000d;
-        public static final int ButtonRefreshGameList=0x7f09000e;
+        public static final int ButtonNewMultiplayerGame=0x7f09000c;
+        public static final int ButtonRefreshGameList=0x7f09000d;
         public static final int Table1=0x7f090013;
         public static final int action_leavegame=0x7f09002a;
         public static final int action_settings=0x7f09002b;
         public static final int buttonCancel=0x7f090023;
         public static final int buttonCard=0x7f090004;
         public static final int buttonContinue=0x7f090018;
-        public static final int buttonJoinGame=0x7f09000b;
-        public static final int buttonLeft=0x7f090003;
+        public static final int buttonJoinGame=0x7f09000a;
+        public static final int buttonLeft=0x7f090002;
         public static final int buttonNext=0x7f090024;
-        public static final int buttonRight=0x7f090007;
+        public static final int buttonRight=0x7f090006;
         public static final int buttonSkip=0x7f090027;
-        public static final int buttonStartGame=0x7f09000c;
+        public static final int buttonStartGame=0x7f09000b;
         public static final int buttonStartMultiplayer=0x7f09000f;
         public static final int buttonStartSinglePlayer=0x7f090010;
-        public static final int buttonSubmit=0x7f090005;
+        public static final int buttonSubmit=0x7f090007;
         public static final int imageViewLogo=0x7f090012;
         public static final int lblRoundNum=0x7f090025;
         public static final int listItemText=0x7f090029;
@@ -54,7 +54,7 @@ public final class R {
         public static final int numberPickerPointLimit=0x7f090021;
         public static final int tableLayout1=0x7f090014;
         public static final int tablePlayers=0x7f090028;
-        public static final int tableRow1=0x7f090000;
+        public static final int tableRow1=0x7f09000e;
         public static final int tableRow2=0x7f090016;
         public static final int tableRow3=0x7f090011;
         public static final int tableRow4=0x7f09001c;
@@ -67,13 +67,13 @@ public final class R {
         public static final int textView2=0x7f09001d;
         public static final int textView3=0x7f090019;
         public static final int textView4=0x7f09001a;
-        public static final int textViewAditionalInfo=0x7f090006;
-        public static final int textViewHelper=0x7f090002;
+        public static final int textViewAditionalInfo=0x7f090005;
+        public static final int textViewHelper=0x7f090001;
         public static final int textViewPlayerName=0x7f090026;
         public static final int textViewPlayerTurnMessage=0x7f090015;
         public static final int textViewPlayerTurnWinnerMessage=0x7f090017;
-        public static final int textViewQuestion=0x7f090001;
-        public static final int textViewStatus=0x7f09000a;
+        public static final int textViewQuestion=0x7f090000;
+        public static final int textViewStatus=0x7f090003;
     }
     public static final class layout {
         public static final int activity_ingame=0x7f030000;
@@ -89,7 +89,8 @@ public final class R {
     public static final class menu {
         public static final int ingame=0x7f080000;
         public static final int menu_join_game=0x7f080001;
-        public static final int menu_multiplayer_game=0x7f080002;
+        public static final int menu_join_multiplayer_game=0x7f080002;
+        public static final int menu_multiplayer_game=0x7f080003;
     }
     public static final class string {
         public static final int action_settings=0x7f060000;

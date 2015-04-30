@@ -20,6 +20,7 @@ public class JoinGameSoapTask extends SoapTask {
 
     @Override
     protected void onPreExecute() {
+        soapAction = formProperSoapAction(METHOD_JOIN_GAME);
         request = new SoapObject(SoapTask.NAMESPACE, METHOD_JOIN_GAME);
         request.addProperty("arg0", gameId);
         request.addProperty("arg1", userName);

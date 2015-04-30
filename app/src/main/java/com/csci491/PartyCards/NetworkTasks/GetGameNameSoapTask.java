@@ -22,6 +22,7 @@ public class GetGameNameSoapTask extends SoapTask {
 
     @Override
     protected void onPreExecute() {
+        soapAction = formProperSoapAction(METHOD_GET_GAME_NAME);
         //getting ready to make the soap call, setting method name and arguments
         request = new SoapObject(SoapTask.NAMESPACE, METHOD_GET_GAME_NAME);
         request.addProperty("arg0", gameId);

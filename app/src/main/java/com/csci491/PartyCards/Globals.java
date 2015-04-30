@@ -46,10 +46,25 @@ public class Globals extends Application
 	public static boolean multiplayerGameIsNew = false;
 	public static int multiplayerGameId;
 	public static String multiplayerGameName;
-	public static boolean multiplayerGameIsActive = false;
 	public static int multiplayerGamePlayerId;
     public static boolean multiplayerFetchingPlayerNames; // set to true until the first soap request returns
     public static boolean multiplayerFetchingGameStatus; // set to true until the first soap request returns
+
+	//black card
+	public static String multiplayerCurrentBlackCard;
+
+	//white cards
+	public static String[] multiplayerCurrentHand;
+	public static int multiplayerWhiteCardIndex;
+
+	//player status
+	public static int multiplayerPlayerIsCardCzar;
+
+	public static int multiplayerTurnPhase;
+	public static int multiplayerTurnNumber;
+	public static int multiplayerNumberOfPlayersChoosing;
+	public static int multiplayerSelectionAccepted;
+	public static boolean previewPhase;
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

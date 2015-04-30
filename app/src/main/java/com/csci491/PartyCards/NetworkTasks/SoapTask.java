@@ -14,7 +14,7 @@ import java.io.IOException;
 
 
 public class SoapTask extends AsyncTask <Void, Void, SoapObject>  {
-    public static final String SERVER_IP_ADDRESS = "10.17.134.68";
+    public static final String SERVER_IP_ADDRESS = "192.168.1.2";
 
     private static final boolean DEBUG = false;
 
@@ -29,10 +29,9 @@ public class SoapTask extends AsyncTask <Void, Void, SoapObject>  {
     public static final String METHOD_START_GAME = "startNewGame";
     public static final String METHOD_IS_GAME_FORMING = "gameIsForming";
 
-    private static final String SOAP_ACTION = "soapAction";
 
     SoapObject request;
-
+    String soapAction;
 
     @Override
     protected SoapObject doInBackground(Void... args) {
@@ -44,7 +43,7 @@ public class SoapTask extends AsyncTask <Void, Void, SoapObject>  {
 
         httpTransport.debug = DEBUG;
         try {
-            httpTransport.call(SOAP_ACTION, envelope);
+            httpTransport.call(soapAction, envelope);
         } catch (HttpResponseException e) {
             Log.d("SOAP", "HttpResponseException on " + request.toString());
         } catch (IOException e) {
@@ -69,6 +68,10 @@ public class SoapTask extends AsyncTask <Void, Void, SoapObject>  {
         }
 
         return null;
+    }
+
+    protected String formProperSoapAction(String method) {
+        return "\"" + NAMESPACE + "PartyCardsInterface/" + method + "Request\"";
     }
 
 

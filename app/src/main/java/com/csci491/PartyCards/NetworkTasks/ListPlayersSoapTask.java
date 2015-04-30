@@ -18,6 +18,7 @@ public class ListPlayersSoapTask extends SoapTask {
 
     @Override
     protected void onPreExecute() {
+        soapAction = formProperSoapAction(METHOD_LIST_PLAYERS);
         request = new SoapObject(SoapTask.NAMESPACE, METHOD_LIST_PLAYERS);
         request.addProperty("arg0", gameId);
 

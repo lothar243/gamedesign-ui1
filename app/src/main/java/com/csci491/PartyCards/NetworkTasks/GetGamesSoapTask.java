@@ -19,6 +19,7 @@ public class GetGamesSoapTask extends SoapTask {
     @Override
     protected void onPreExecute() {
         // setup the soap call specific to this method
+        soapAction = formProperSoapAction(METHOD_GET_NEW_GAMES);
         request = new SoapObject(SoapTask.NAMESPACE, METHOD_GET_NEW_GAMES);
     }
 
