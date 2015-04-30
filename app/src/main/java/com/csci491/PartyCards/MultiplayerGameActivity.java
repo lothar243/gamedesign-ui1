@@ -5,46 +5,174 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import com.csci491.PartyCards.NetworkTasks.NetworkMethods;
+import com.csci491.PartyCards.NetworkTasks.PartyCardsInterface;
 
 
 public class MultiplayerGameActivity extends Activity {
+    public static final int MESSAGE_GENERAL_UPDATE = 0;
+    public static final int MESSAGE_SUBMIT_SUCCESS = 1;
+    public static final int MESSAGE_SUBMIT_FAILURE = 2;
+
+
+    TextView blackCardTextView;
+    Button visibleWhiteCardButton;
+    Button submitButton;
+    TextView textViewAditionalInfo;
+    TextView textViewStatus;
+    boolean submitButtonCanBeToggled;
+
+    public static Handler uiHandler;
+    WorkerThread backgroundTaskThread;
 
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ingame);
 
-        // TODO fetch current black card
-        // TODO fetch the current hand
-        // TODO fetch the current player status (Czar or normal player)
+        // store some initial data in the various cards until the actual values are retrieved
+        Globals.multiplayerTurnNumber = -1;
+        initGameVariables();
 
 
-        // set question (Black card)
-        TextView question = (TextView) findViewById(R.id.textViewQuestion);
-        question.setText("TextViewQuestion");
 
-        // set white cards based on player's hand
-        Button buttonCard = (Button) findViewById(R.id.buttonCard);
-        buttonCard.setText("buttonCard");
-        buttonCard.setOnClickListener(cardListener);
 
-        // navigation (white cards)
-        Globals.setIndexWhiteCard(0);
+        // set up references to ui elements
         Button buttonLeft = (Button) findViewById(R.id.buttonLeft);
         Button buttonRight = (Button) findViewById(R.id.buttonRight);
+        blackCardTextView = (TextView) findViewById(R.id.textViewQuestion);
+        textViewAditionalInfo = (TextView) findViewById(R.id.textViewAditionalInfo);
+        textViewStatus = (TextView) findViewById(R.id.textViewStatus);
+        visibleWhiteCardButton = (Button) findViewById(R.id.buttonCard);
+        submitButton = (Button) findViewById(R.id.buttonSubmit);
 
-        // display card #
-        TextView textViewAditionalInfo = (TextView) findViewById(R.id.textViewAditionalInfo);
-        textViewAditionalInfo.setVisibility(View.VISIBLE);
-        textViewAditionalInfo.setText(Globals.getIndexWhiteCard() + 1 + " / 7");
 
         // set listeners on navigation
         buttonLeft.setOnClickListener(leftListener);
         buttonRight.setOnClickListener(rightListener);
+        submitButton.setOnClickListener(submitListener);
+        visibleWhiteCardButton.setOnClickListener(cardListener);
+
+
+        // this allows the background thread to call for ui updates
+        uiHandler = new Handler() {
+            // this will handle the notification gets from background thread
+            @Override
+            public void handleMessage(Message msg) {
+                // make necessary changes to UI
+                updateUI(msg);
+            }
+        };
+
+        // create a seperate thread to handle network communication
+        backgroundTaskThread = new WorkerThread(uiHandler);
+        backgroundTaskThread.start();
+        while(backgroundTaskThread.getHandlerToMsgQueue() == null) {
+                    // delay until the backgroundThread gets set up
+        }
+
+        // fetch current game information
+        backgroundTaskThread.getHandlerToMsgQueue().sendEmptyMessage(PartyCardsInterface.GET_BLACK_CARD);
+        backgroundTaskThread.getHandlerToMsgQueue().sendEmptyMessage(PartyCardsInterface.GET_HAND);
+        backgroundTaskThread.getHandlerToMsgQueue().sendEmptyMessage(PartyCardsInterface.PLAYER_IS_CARD_CZAR);
+        backgroundTaskThread.getHandlerToMsgQueue().sendEmptyMessage(PartyCardsInterface.GET_TURN_STATUS);
+    }
+
+    public void updateUI(Message msg) {
+        // first check to make sure all variables have been set at least once
+        textViewStatus.setVisibility(View.VISIBLE);
+        if(Globals.multiplayerCurrentBlackCard.equals("")) {
+            Log.e("UpdateUI", "black card uninitialized");
+        }
+        if(Globals.multiplayerCurrentHand.equals(null)) {
+            Log.e("updateUI", "hand uninitialized");
+        }
+        if(Globals.multiplayerCurrentBlackCard.equals(defaultCardText)
+                || Globals.multiplayerCurrentHand[0].equals(defaultCardText)
+                || Globals.multiplayerPlayerIsCardCzar == -1
+                || Globals.multiplayerTurnPhase == -1
+                || Globals.multiplayerTurnNumber == -1
+                || Globals.multiplayerNumberOfPlayersChoosing == -1) {
+            //
+            textViewStatus.setText("czar:" + Globals.multiplayerPlayerIsCardCzar + "phase:" + Globals.multiplayerTurnPhase + "turn:" + Globals.multiplayerTurnNumber + "Choosing:" + Globals.multiplayerNumberOfPlayersChoosing);
+        }
+        else { // no longer initializing
+            blackCardTextView.setText(Globals.multiplayerCurrentBlackCard);
+            visibleWhiteCardButton.setText(Globals.multiplayerCurrentHand[Globals.multiplayerWhiteCardIndex]);
+
+            if(Globals.previewPhase) {
+                textViewStatus.setText("Review game stats");
+                submitButton.setText("Proceed");
+                submitButtonCanBeToggled = false;
+                submitButton.setVisibility(View.VISIBLE);
+            }
+            else {
+                switch (Globals.multiplayerTurnPhase) {
+                    case 1: // normal players are choosing cards, card czar is waiting
+                        if (Globals.multiplayerPlayerIsCardCzar == 0) { // normal players
+                            submitButtonCanBeToggled = true;
+                            switch (Globals.multiplayerSelectionAccepted) {
+                                case -1:
+                                    textViewStatus.setText("Error submitting, try again");
+                                    submitButton.setText("Resubmit");
+                                    break;
+                                case 0:
+                                    textViewStatus.setText("Choose your card");
+                                    submitButton.setText("Submit");
+                                    break;
+                                case 1:
+                                    textViewStatus.setText("Waiting on " + Globals.multiplayerNumberOfPlayersChoosing + " players");
+                                    submitButton.setText("Change selection");
+                                    backgroundTaskThread.periodicRefresh();
+                                    break;
+                            }
+                        } else { // card czar
+                            textViewStatus.setText("You're the card czar\nWaiting on " + Globals.multiplayerNumberOfPlayersChoosing + " players");
+                            submitButton.setVisibility(View.INVISIBLE);
+                            submitButtonCanBeToggled = false;
+                            backgroundTaskThread.periodicRefresh();
+
+                        }
+                        break;
+                    case 2: // card czar is choosing a card, other players can view selection
+                        if (Globals.multiplayerPlayerIsCardCzar == 0) { // normal players
+                            textViewStatus.setText("Waiting on card czar\nHere are the selections");
+                            backgroundTaskThread.periodicRefresh();
+                            submitButton.setVisibility(View.INVISIBLE);
+                            submitButtonCanBeToggled = false;
+                        } else { // card czar
+                            textViewStatus.setText("You're the card czar\nSelect a card");
+                            submitButtonCanBeToggled = true;
+                            submitButton.setText("Select winner");
+                        }
+                        break;
+                }
+            }
+        }
+
+    }
+
+    public static final String defaultCardText = "Fetching game information...";
+
+    private void initGameVariables() {
+        Globals.previewPhase = true;
+        Globals.multiplayerCurrentBlackCard = defaultCardText;
+        Globals.multiplayerCurrentHand = new String[]{defaultCardText};
+        Globals.multiplayerPlayerIsCardCzar = -1;
+        Globals.multiplayerWhiteCardIndex = 0;
+        Globals.multiplayerTurnPhase = -1;
+        Globals.multiplayerNumberOfPlayersChoosing = -1;
+        Globals.multiplayerSelectionAccepted = 0;
 
     }
 
@@ -61,25 +189,18 @@ public class MultiplayerGameActivity extends Activity {
     // ===============================================================================================================
     private View.OnClickListener leftListener = new View.OnClickListener() {
         public void onClick(View v) {
-            Button card = (Button) findViewById(R.id.buttonCard);
 
-            Button submit = (Button) findViewById(R.id.buttonSubmit);
-            submit.setVisibility(View.GONE);
+            submitButton.setVisibility(View.INVISIBLE);
+            textViewStatus.setVisibility(View.VISIBLE);
 
-            // verify if it's possible to go back
-            // yes, so go back
-            if (Globals.getIndexWhiteCard() > 0)
-                Globals.setIndexWhiteCard(Globals.getIndexWhiteCard() - 1);
-                // no, so go to last card
-            else
-                Globals.setIndexWhiteCard(Globals.getPlayers().get(Globals.getIndexHumanPlayer()).getMyHand().size() - 1);
+            // decrease index by one, or increase by 6 if it's already 0
+            Globals.multiplayerWhiteCardIndex = (Globals.multiplayerWhiteCardIndex + Globals.multiplayerCurrentHand.length - 1) %Globals.multiplayerCurrentHand.length;
 
-            card.setText("cardText");
+            //set the text of the visible white card
+            visibleWhiteCardButton.setText(Globals.multiplayerCurrentHand[Globals.multiplayerWhiteCardIndex]);
 
-            System.out.println("PLAYER CARD: " + Globals.getIndexWhiteCard() + " --- CARD #: " + (Globals.getIndexWhiteCard() + 1));
-
-            TextView textViewAditionalInfo = (TextView) findViewById(R.id.textViewAditionalInfo);
-            textViewAditionalInfo.setText(Globals.getIndexWhiteCard() + 1 + " / " + Globals.getHandSize());
+            // update the index at the bottom of the screen
+            textViewAditionalInfo.setText(Globals.multiplayerWhiteCardIndex + 1 + " / " + Globals.getHandSize());
         }
     };
 
@@ -90,24 +211,17 @@ public class MultiplayerGameActivity extends Activity {
     // ===============================================================================================================
     private View.OnClickListener rightListener = new View.OnClickListener() {
         public void onClick(View v) {
-            Button card = (Button) findViewById(R.id.buttonCard);
-            Button submit = (Button) findViewById(R.id.buttonSubmit);
-            submit.setVisibility(View.GONE);
+            submitButton.setVisibility(View.INVISIBLE);
+            textViewStatus.setVisibility(View.VISIBLE);
 
-            // verify if it's possible to go further
-            // yes, so go further
-            if (Globals.getIndexWhiteCard() < Globals.getPlayers().get(Globals.getIndexHumanPlayer()).getMyHand().size() - 1)
-                Globals.setIndexWhiteCard(Globals.getIndexWhiteCard() + 1);
-                // no, so go back to fisrt card
-            else
-                Globals.setIndexWhiteCard(0);
+            // increase index by one, or decrease by 6 if it's already 6
+            Globals.multiplayerWhiteCardIndex = (Globals.multiplayerWhiteCardIndex + 1) % Globals.multiplayerCurrentHand.length;
 
-            card.setText("Card text2");
+            //set the text of the visible white card
+            visibleWhiteCardButton.setText(Globals.multiplayerCurrentHand[Globals.multiplayerWhiteCardIndex]);
 
-            System.out.println("PLAYER CARD: " + Globals.getIndexWhiteCard() + " --- CARD #: " + (Globals.getIndexWhiteCard() + 1));
-
-            TextView textViewAditionalInfo = (TextView) findViewById(R.id.textViewAditionalInfo);
-            textViewAditionalInfo.setText(Globals.getIndexWhiteCard() + 1 + " / " + Globals.getHandSize());
+            // update the index at the bottom of the screen
+            textViewAditionalInfo.setText(Globals.multiplayerWhiteCardIndex + 1 + " / " + Globals.multiplayerCurrentHand.length);
         }
     };
 
@@ -118,16 +232,14 @@ public class MultiplayerGameActivity extends Activity {
     // ===============================================================================================================
     private View.OnClickListener cardListener = new View.OnClickListener() {
         public void onClick(View v) {
-            // turn the visibility of the "submit" button to TRUE
-            Button buttonSubmit = (Button) findViewById(R.id.buttonSubmit);
 
-            if (buttonSubmit.getVisibility() == View.GONE)
-                buttonSubmit.setVisibility(View.VISIBLE);
-            else
-                buttonSubmit.setVisibility(View.GONE);
-
+            if(submitButtonCanBeToggled) { // not all screens allow this button to be toggled
+                if (submitButton.getVisibility() == View.INVISIBLE)
+                    submitButton.setVisibility(View.VISIBLE);
+                else
+                    submitButton.setVisibility(View.INVISIBLE);
+            }
             // Call the listener of the button
-            buttonSubmit.setOnClickListener(submitListener);
         }
     };
 
@@ -138,20 +250,20 @@ public class MultiplayerGameActivity extends Activity {
     // ===============================================================================================================
     private View.OnClickListener submitListener = new View.OnClickListener() {
         public void onClick(View arg0) {
-            //TODO communicate with server that a card has been selected
-//            // stores who submitted this card in the property "owner"
-//            Globals.getPlayers().get(Globals.getIndexHumanPlayer()).getMyHand().get(Globals.getIndexWhiteCard()).setOwner(Globals.getPlayers().get(Globals.getIndexHumanPlayer()));
-//
-//            // Calling this method will remove the card from the players hand and make the player draw a new card from the white pile
-//            // additionally, if the white pile is empty, the player will re-shuffle the white deck and draw from it
-//            Globals.getPlays().add(Globals.getPlayers().get(Globals.getIndexHumanPlayer()).playWhiteCard(Globals.getIndexWhiteCard()));
-//
-//            Globals.setIndexWhiteCard(0);
-//
-//            // Redirect to Player Turn screen
-//            Intent intent = new Intent(InGameActivity.this, PlayerTurnActivity.class);
-//            startActivity(intent);
-//            finish();
+            // communicate with server that a card has been selected
+            if(Globals.previewPhase) {
+                // prepare for next round
+                Toast.makeText(getApplicationContext(), "proceed from preview phase", Toast.LENGTH_SHORT).show();
+                Globals.previewPhase = false;
+                initGameVariables();
+                backgroundTaskThread.getHandlerToMsgQueue().sendEmptyMessage(PartyCardsInterface.GET_BLACK_CARD);
+                backgroundTaskThread.getHandlerToMsgQueue().sendEmptyMessage(PartyCardsInterface.GET_HAND);
+                backgroundTaskThread.getHandlerToMsgQueue().sendEmptyMessage(PartyCardsInterface.PLAYER_IS_CARD_CZAR);
+                backgroundTaskThread.getHandlerToMsgQueue().sendEmptyMessage(PartyCardsInterface.GET_TURN_STATUS);
+            }
+            else {
+                backgroundTaskThread.getHandlerToMsgQueue().sendEmptyMessage(PartyCardsInterface.CHOOSE_CARD);
+            }
         }
     };
 
@@ -204,4 +316,97 @@ public class MultiplayerGameActivity extends Activity {
                 return super.onOptionsItemSelected(item);
         }
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // start the background thread
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+    }
+}
+
+class WorkerThread extends Thread {
+    private final static String TAG = WorkerThread.class.getSimpleName(); // for the debugger
+    NetworkMethods networkMethods;
+
+    // when we need to update the ui
+    private static Handler uiHandler;
+
+    // to pass message back to itself
+    private static Handler workerHandler;
+
+    public WorkerThread(Handler uiHandler) {
+        this.uiHandler = uiHandler;
+    }
+
+    public void run() {
+        // Thread by default doesn't have a msg queue, to attach a msg queue to this thread
+        Looper.prepare();
+        networkMethods = new NetworkMethods();
+        // this will bind the Handler to the msg queue
+        // notice that msg queue is FIFO, if u send 2 runable objects 1 after the other, second 1 will wait till first one finish
+        workerHandler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                switch (msg.what) {
+                    case PartyCardsInterface.GET_HAND:
+                        Globals.multiplayerCurrentHand = networkMethods.getHand(Globals.multiplayerGameId, Globals.multiplayerGamePlayerId);
+                        if (Globals.multiplayerWhiteCardIndex >= Globals.multiplayerCurrentHand.length) {
+                            Globals.multiplayerWhiteCardIndex = 0;
+                        }
+                        break;
+                    case PartyCardsInterface.GET_BLACK_CARD:
+                        Globals.multiplayerCurrentBlackCard = networkMethods.getBlackCard(Globals.multiplayerGameId);
+                        break;
+                    case PartyCardsInterface.CHOOSE_CARD:
+                        Globals.multiplayerNumberOfPlayersChoosing = networkMethods.chooseCard(Globals.multiplayerGameId, Globals.multiplayerGamePlayerId, Globals.multiplayerWhiteCardIndex);
+
+                        break;
+                    case PartyCardsInterface.PLAYER_IS_CARD_CZAR:
+                        Globals.multiplayerPlayerIsCardCzar = networkMethods.playerIsCardCzar(Globals.multiplayerGameId, Globals.multiplayerGamePlayerId);
+                        break;
+                    case PartyCardsInterface.GET_TURN_STATUS:
+                        // // returns [turn number][phase number][numberOfPlayersChoosing]
+                        Integer[] turnStatus = networkMethods.getTurnStatus(Globals.multiplayerGameId);
+                        if(Globals.multiplayerTurnNumber < turnStatus[0]) {
+                            // before we begin the round, let's review who's playing the game, points, etc
+                            Globals.previewPhase = true;
+                            Globals.multiplayerTurnNumber = turnStatus[0];
+                            Globals.multiplayerTurnPhase = turnStatus[1];
+                            Globals.multiplayerNumberOfPlayersChoosing = turnStatus[2];
+                            Globals.multiplayerCurrentHand = networkMethods.roundSummary(Globals.multiplayerGameId);
+                        }
+                        else {
+                            Globals.multiplayerTurnNumber = turnStatus[0];
+                            Globals.multiplayerTurnPhase = turnStatus[1];
+                            Globals.multiplayerNumberOfPlayersChoosing = turnStatus[2];
+                        }
+                        break;
+                    default:
+
+                        break;
+
+                }
+                uiHandler.sendEmptyMessage(0);
+
+            }
+        };
+        // handles msgs/runnables receive to msgqueue, this will start a loop that listens msg receiving
+        Looper.loop();
+    }
+
+    public void periodicRefresh() {
+        if(!workerHandler.hasMessages(PartyCardsInterface.GET_TURN_STATUS)) {
+            workerHandler.sendEmptyMessageDelayed(PartyCardsInterface.GET_TURN_STATUS, 5000);
+        }
+    }
+
+    public Handler getHandlerToMsgQueue() {
+        return workerHandler;
+    }
+
 }
