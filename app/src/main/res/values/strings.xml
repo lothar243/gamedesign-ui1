@@ -65,5 +65,7 @@
     <string name="title_activity_multiplayer_game">MultiplayerGameActivity</string>
     <string name="textButtonJoin">Join</string>
     <string name="textButtonStartGame">Start game</string>
+    <string name="setServerIP">Set Server IP</string>
+    <string name="changePlayerNumber">Change your player number (debugging)</string>
 
 </resources>

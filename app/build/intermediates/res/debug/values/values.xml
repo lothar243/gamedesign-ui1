@@ -22,6 +22,7 @@
     <string name="blank_player_name_toast">All players must have a name!</string>
     <string name="blank_point_limit_toast">Please choose the point limit</string>
     <string name="cancel">Cancel</string>
+    <string name="changePlayerNumber">Change your player number (debugging)</string>
     <string name="choose">Choose</string>
     <string name="game_winner">You won the game!</string>
     <string name="hello_world">Hello world!</string>
@@ -50,6 +51,7 @@
     <string name="round">Round</string>
     <string name="round_winner">won this round!</string>
     <string name="sampleListText">Sample Text</string>
+    <string name="setServerIP">Set Server IP</string>
     <string name="singleplayer">One Phone</string>
     <string name="skip">Continue</string>
     <string name="start_game">Start Game</string>

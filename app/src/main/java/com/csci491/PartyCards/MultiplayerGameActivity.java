@@ -8,11 +8,13 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.text.InputType;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,9 +23,6 @@ import com.csci491.PartyCards.NetworkTasks.PartyCardsInterface;
 
 
 public class MultiplayerGameActivity extends Activity {
-    public static final int MESSAGE_GENERAL_UPDATE = 0;
-    public static final int MESSAGE_SUBMIT_SUCCESS = 1;
-    public static final int MESSAGE_SUBMIT_FAILURE = 2;
 
 
     TextView blackCardTextView;
@@ -90,13 +89,6 @@ public class MultiplayerGameActivity extends Activity {
 
     public void updateUI(Message msg) {
         // first check to make sure all variables have been set at least once
-        textViewStatus.setVisibility(View.VISIBLE);
-        if(Globals.multiplayerCurrentBlackCard.equals("")) {
-            Log.e("UpdateUI", "black card uninitialized");
-        }
-        if(Globals.multiplayerCurrentHand.equals(null)) {
-            Log.e("updateUI", "hand uninitialized");
-        }
         if(Globals.multiplayerCurrentBlackCard.equals(defaultCardText)
                 || Globals.multiplayerCurrentHand[0].equals(defaultCardText)
                 || Globals.multiplayerPlayerIsCardCzar == -1
@@ -104,7 +96,7 @@ public class MultiplayerGameActivity extends Activity {
                 || Globals.multiplayerTurnNumber == -1
                 || Globals.multiplayerNumberOfPlayersChoosing == -1) {
             //
-            textViewStatus.setText("czar:" + Globals.multiplayerPlayerIsCardCzar + "phase:" + Globals.multiplayerTurnPhase + "turn:" + Globals.multiplayerTurnNumber + "Choosing:" + Globals.multiplayerNumberOfPlayersChoosing);
+            textViewStatus.setText("debug info: czar:" + Globals.multiplayerPlayerIsCardCzar + "phase:" + Globals.multiplayerTurnPhase + "turn:" + Globals.multiplayerTurnNumber + "Choosing:" + Globals.multiplayerNumberOfPlayersChoosing);
         }
         else { // no longer initializing
             blackCardTextView.setText(Globals.multiplayerCurrentBlackCard);
@@ -120,6 +112,7 @@ public class MultiplayerGameActivity extends Activity {
                 switch (Globals.multiplayerTurnPhase) {
                     case 1: // normal players are choosing cards, card czar is waiting
                         if (Globals.multiplayerPlayerIsCardCzar == 0) { // normal players
+                            Toast.makeText(getApplicationContext(), "normal player phase 1", Toast.LENGTH_SHORT).show();
                             submitButtonCanBeToggled = true;
                             switch (Globals.multiplayerSelectionAccepted) {
                                 case -1:
@@ -137,6 +130,7 @@ public class MultiplayerGameActivity extends Activity {
                                     break;
                             }
                         } else { // card czar
+                            Toast.makeText(getApplicationContext(), "card czar phase 1", Toast.LENGTH_SHORT).show();
                             textViewStatus.setText("You're the card czar\nWaiting on " + Globals.multiplayerNumberOfPlayersChoosing + " players");
                             submitButton.setVisibility(View.INVISIBLE);
                             submitButtonCanBeToggled = false;
@@ -146,11 +140,13 @@ public class MultiplayerGameActivity extends Activity {
                         break;
                     case 2: // card czar is choosing a card, other players can view selection
                         if (Globals.multiplayerPlayerIsCardCzar == 0) { // normal players
+                            Toast.makeText(getApplicationContext(), "normal player phase 2", Toast.LENGTH_SHORT).show();
                             textViewStatus.setText("Waiting on card czar\nHere are the selections");
                             backgroundTaskThread.periodicRefresh();
                             submitButton.setVisibility(View.INVISIBLE);
                             submitButtonCanBeToggled = false;
                         } else { // card czar
+                            Toast.makeText(getApplicationContext(), "card czard phase 2", Toast.LENGTH_SHORT).show();
                             textViewStatus.setText("You're the card czar\nSelect a card");
                             submitButtonCanBeToggled = true;
                             submitButton.setText("Select winner");
@@ -165,7 +161,6 @@ public class MultiplayerGameActivity extends Activity {
     public static final String defaultCardText = "Fetching game information...";
 
     private void initGameVariables() {
-        Globals.previewPhase = true;
         Globals.multiplayerCurrentBlackCard = defaultCardText;
         Globals.multiplayerCurrentHand = new String[]{defaultCardText};
         Globals.multiplayerPlayerIsCardCzar = -1;
@@ -190,7 +185,6 @@ public class MultiplayerGameActivity extends Activity {
     private View.OnClickListener leftListener = new View.OnClickListener() {
         public void onClick(View v) {
 
-            submitButton.setVisibility(View.INVISIBLE);
             textViewStatus.setVisibility(View.VISIBLE);
 
             // decrease index by one, or increase by 6 if it's already 0
@@ -211,7 +205,6 @@ public class MultiplayerGameActivity extends Activity {
     // ===============================================================================================================
     private View.OnClickListener rightListener = new View.OnClickListener() {
         public void onClick(View v) {
-            submitButton.setVisibility(View.INVISIBLE);
             textViewStatus.setVisibility(View.VISIBLE);
 
             // increase index by one, or decrease by 6 if it's already 6
@@ -253,7 +246,6 @@ public class MultiplayerGameActivity extends Activity {
             // communicate with server that a card has been selected
             if(Globals.previewPhase) {
                 // prepare for next round
-                Toast.makeText(getApplicationContext(), "proceed from preview phase", Toast.LENGTH_SHORT).show();
                 Globals.previewPhase = false;
                 initGameVariables();
                 backgroundTaskThread.getHandlerToMsgQueue().sendEmptyMessage(PartyCardsInterface.GET_BLACK_CARD);
@@ -289,9 +281,10 @@ public class MultiplayerGameActivity extends Activity {
     // This method handles item selection
     // ===============================================================================================================
     public boolean onOptionsItemSelected(MenuItem item) {
+        AlertDialog.Builder builder;
         switch (item.getItemId()) {
             case R.id.action_leavegame:
-                AlertDialog.Builder builder = new AlertDialog.Builder(MultiplayerGameActivity.this);
+                builder = new AlertDialog.Builder(MultiplayerGameActivity.this);
                 builder.setTitle(R.string.leave_game_message);
 
                 // Add the buttons
@@ -311,10 +304,49 @@ public class MultiplayerGameActivity extends Activity {
                 // Create the AlertDialog
                 AlertDialog dialog = builder.create();
                 dialog.show();
-                return true;
+                break;
+            case R.id.playerNumber:
+
+                builder = new AlertDialog.Builder(MultiplayerGameActivity.this);
+                builder.setTitle(R.string.changePlayerNumber);
+
+                final EditText input = new EditText(this);
+                // Specify the type of input expected;
+                input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                builder.setView(input);
+
+                // Set up the buttons
+                builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        try {
+                            Globals.multiplayerGamePlayerId = Integer.parseInt(input.getText().toString());
+                        }
+                        catch (Exception e) {
+                            Toast.makeText(getApplicationContext(), "Error parsing the number", Toast.LENGTH_SHORT);
+                        }
+                        initGameVariables();
+                        backgroundTaskThread.getHandlerToMsgQueue().sendEmptyMessage(PartyCardsInterface.GET_BLACK_CARD);
+                        backgroundTaskThread.getHandlerToMsgQueue().sendEmptyMessage(PartyCardsInterface.GET_HAND);
+                        backgroundTaskThread.getHandlerToMsgQueue().sendEmptyMessage(PartyCardsInterface.PLAYER_IS_CARD_CZAR);
+                        backgroundTaskThread.getHandlerToMsgQueue().sendEmptyMessage(PartyCardsInterface.GET_TURN_STATUS);
+
+                    }
+                });
+                builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.cancel();
+                    }
+                });
+
+                builder.show();
+                break;
+
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return true;
     }
 
     @Override
@@ -364,7 +396,9 @@ class WorkerThread extends Thread {
                         break;
                     case PartyCardsInterface.CHOOSE_CARD:
                         Globals.multiplayerNumberOfPlayersChoosing = networkMethods.chooseCard(Globals.multiplayerGameId, Globals.multiplayerGamePlayerId, Globals.multiplayerWhiteCardIndex);
-
+                        if(Globals.multiplayerNumberOfPlayersChoosing == 0) {
+                            getHandlerToMsgQueue().sendEmptyMessage(PartyCardsInterface.GET_TURN_STATUS);
+                        }
                         break;
                     case PartyCardsInterface.PLAYER_IS_CARD_CZAR:
                         Globals.multiplayerPlayerIsCardCzar = networkMethods.playerIsCardCzar(Globals.multiplayerGameId, Globals.multiplayerGamePlayerId);

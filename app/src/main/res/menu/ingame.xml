@@ -1,22 +1,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android" >
 
-    <!-- 
+
     <item
-        android:id="@+id/action_settings"
-        android:orderInCategory="100"
+        android:id="@+id/playerNumber"
+        android:visible="true"
+        android:orderInCategory="98"
         android:showAsAction="never"
-        android:title="@string/action_settings"/>
-    -->
+        android:title="@string/changePlayerNumber"/>
+    <item
+        android:id="@+id/set_server_ip"
+        android:orderInCategory="99"
+        android:showAsAction="never"
+        android:title="@string/setServerIP"/>
     <item
         android:id="@+id/action_leavegame"
         android:orderInCategory="100"
         android:showAsAction="never"
         android:title="@string/leave_game"/>
-    <!--
-    <item
-        android:id="@+id/action_endgame"
-        android:orderInCategory="100"
-        android:showAsAction="never"
-        android:title="End Game"/>
-	-->
 </menu>

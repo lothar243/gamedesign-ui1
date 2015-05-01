@@ -65,6 +65,7 @@ public class Globals extends Application
 	public static int multiplayerNumberOfPlayersChoosing;
 	public static int multiplayerSelectionAccepted;
 	public static boolean previewPhase;
+	public static String multiplayerServerIPAddress = "192.168.1.2";
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

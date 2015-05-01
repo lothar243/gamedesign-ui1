@@ -3,6 +3,8 @@ package com.csci491.PartyCards.NetworkTasks;
 import android.os.AsyncTask;
 import android.util.Log;
 
+import com.csci491.PartyCards.Globals;
+
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
@@ -14,13 +16,12 @@ import java.io.IOException;
 
 
 public class SoapTask extends AsyncTask <Void, Void, SoapObject>  {
-    public static final String SERVER_IP_ADDRESS = "192.168.1.2";
 
     private static final boolean DEBUG = false;
 
-    public static final String WSDL_URL = "http://" + SERVER_IP_ADDRESS + ":52244/ws/partyCards?wsdl"; // for manual inspection of the wsdl
+    public static final String WSDL_URL = "http://" + Globals.multiplayerServerIPAddress + ":52244/ws/partyCards?wsdl"; // for manual inspection of the wsdl
     public static final String NAMESPACE = "http://java.main/";
-    public static final String URL = "http://" + SERVER_IP_ADDRESS + ":52244/ws/partyCards/";
+    public static final String URL = "http://" + Globals.multiplayerServerIPAddress + ":52244/ws/partyCards/";
     public static final String METHOD_CREATE_GAME = "createNewGame"; // @WebMethod int createNewGame(String gameName); // returns id of game
     public static final String METHOD_GET_NEW_GAMES = "getGames";
     public static final String METHOD_GET_GAME_NAME = "getGameName";

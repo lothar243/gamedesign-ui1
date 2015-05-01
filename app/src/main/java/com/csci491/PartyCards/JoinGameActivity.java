@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
 import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +15,8 @@ import android.widget.TextView;
 import com.csci491.PartyCards.NetworkTasks.IsGameFormingSoapTask;
 import com.csci491.PartyCards.NetworkTasks.JoinGameSoapTask;
 import com.csci491.PartyCards.NetworkTasks.ListPlayersSoapTask;
+import com.csci491.PartyCards.NetworkTasks.NetworkMethods;
+import com.csci491.PartyCards.NetworkTasks.PartyCardsInterface;
 import com.csci491.PartyCards.NetworkTasks.StartGameSoapTask;
 
 
@@ -192,3 +195,5 @@ public class JoinGameActivity extends Activity {
         active = false;
     }
 }
+
+
