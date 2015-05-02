@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     android:orientation="vertical">
 
     <TextView
@@ -20,25 +20,29 @@
 
 
     <LinearLayout
+        android:background="@drawable/bg"
+
         android:orientation="horizontal"
         android:layout_width="match_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:layout_weight="0">
+        android:layout_weight="1">
 
         <Button
             android:id="@+id/buttonLeft"
             android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_height="300dp"
             android:layout_gravity="center"
-            android:text="@string/left" />
+            android:text="@string/left"
+            android:gravity="center_vertical"
+            android:textSize="25sp" />
 
 
         <LinearLayout
             android:orientation="vertical"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
+            android:layout_height="fill_parent"
+            android:layout_weight="4">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -50,11 +54,13 @@
 
             <Button
                 android:id="@+id/buttonCard"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
                 android:background="@color/whiteT"
                 android:text="white text"
-                android:textColor="@color/black" />
+                android:textColor="@color/black"
+                android:layout_weight="1"
+                android:layout_margin="20dp" />
 
             <TextView
                 android:id="@+id/textViewAditionalInfo"
@@ -68,10 +74,13 @@
 
         </LinearLayout>
         <Button
-            android:id="@+id/buttonRight"
-            android:layout_height="fill_parent"
-            android:text="@string/right"
-            android:layout_width="wrap_content" />
+        android:id="@+id/buttonRight"
+        android:layout_width="wrap_content"
+        android:layout_height="300dp"
+        android:layout_gravity="center"
+        android:text="@string/right"
+        android:gravity="center_vertical"
+        android:textSize="25sp" />
 
 
 

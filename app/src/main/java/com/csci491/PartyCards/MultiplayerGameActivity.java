@@ -30,7 +30,6 @@ public class MultiplayerGameActivity extends Activity {
     Button submitButton;
     TextView textViewAditionalInfo;
     TextView textViewStatus;
-    boolean submitButtonCanBeToggled;
 
     public static Handler uiHandler;
     WorkerThread backgroundTaskThread;
@@ -60,7 +59,7 @@ public class MultiplayerGameActivity extends Activity {
         buttonLeft.setOnClickListener(leftListener);
         buttonRight.setOnClickListener(rightListener);
         submitButton.setOnClickListener(submitListener);
-        visibleWhiteCardButton.setOnClickListener(cardListener);
+//        visibleWhiteCardButton.setOnClickListener(cardListener);
 
 
         // this allows the background thread to call for ui updates
@@ -105,15 +104,14 @@ public class MultiplayerGameActivity extends Activity {
             if(Globals.previewPhase) {
                 textViewStatus.setText("Review game stats");
                 submitButton.setText("Proceed");
-                submitButtonCanBeToggled = false;
                 submitButton.setVisibility(View.VISIBLE);
             }
             else {
                 switch (Globals.multiplayerTurnPhase) {
                     case 1: // normal players are choosing cards, card czar is waiting
+                        submitButton.setVisibility(View.VISIBLE);
                         if (Globals.multiplayerPlayerIsCardCzar == 0) { // normal players
                             Toast.makeText(getApplicationContext(), "normal player phase 1", Toast.LENGTH_SHORT).show();
-                            submitButtonCanBeToggled = true;
                             switch (Globals.multiplayerSelectionAccepted) {
                                 case -1:
                                     textViewStatus.setText("Error submitting, try again");
@@ -133,7 +131,6 @@ public class MultiplayerGameActivity extends Activity {
                             Toast.makeText(getApplicationContext(), "card czar phase 1", Toast.LENGTH_SHORT).show();
                             textViewStatus.setText("You're the card czar\nWaiting on " + Globals.multiplayerNumberOfPlayersChoosing + " players");
                             submitButton.setVisibility(View.INVISIBLE);
-                            submitButtonCanBeToggled = false;
                             backgroundTaskThread.periodicRefresh();
 
                         }
@@ -144,12 +141,11 @@ public class MultiplayerGameActivity extends Activity {
                             textViewStatus.setText("Waiting on card czar\nHere are the selections");
                             backgroundTaskThread.periodicRefresh();
                             submitButton.setVisibility(View.INVISIBLE);
-                            submitButtonCanBeToggled = false;
                         } else { // card czar
                             Toast.makeText(getApplicationContext(), "card czard phase 2", Toast.LENGTH_SHORT).show();
                             textViewStatus.setText("You're the card czar\nSelect a card");
-                            submitButtonCanBeToggled = true;
                             submitButton.setText("Select winner");
+                            submitButton.setVisibility(View.VISIBLE);
                         }
                         break;
                 }
@@ -225,13 +221,11 @@ public class MultiplayerGameActivity extends Activity {
     // ===============================================================================================================
     private View.OnClickListener cardListener = new View.OnClickListener() {
         public void onClick(View v) {
-
-            if(submitButtonCanBeToggled) { // not all screens allow this button to be toggled
-                if (submitButton.getVisibility() == View.INVISIBLE)
-                    submitButton.setVisibility(View.VISIBLE);
-                else
-                    submitButton.setVisibility(View.INVISIBLE);
-            }
+            // deprecated
+            if (submitButton.getVisibility() == View.INVISIBLE)
+                submitButton.setVisibility(View.VISIBLE);
+            else
+                submitButton.setVisibility(View.INVISIBLE);
             // Call the listener of the button
         }
     };
