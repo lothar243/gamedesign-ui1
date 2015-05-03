@@ -4,53 +4,28 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Looper;
 import android.os.Message;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
-import com.csci491.PartyCards.NetworkTasks.IsGameFormingSoapTask;
-import com.csci491.PartyCards.NetworkTasks.JoinGameSoapTask;
-import com.csci491.PartyCards.NetworkTasks.ListPlayersSoapTask;
-import com.csci491.PartyCards.NetworkTasks.NetworkMethods;
 import com.csci491.PartyCards.NetworkTasks.PartyCardsInterface;
-import com.csci491.PartyCards.NetworkTasks.StartGameSoapTask;
 
 
 public class JoinGameActivity extends Activity {
-    TextView playersNames;
-    boolean active = true;
-    TextView statusTextView;
-    Button startGameButton;
-    Button joinGameButton;
+    public static BasicGameData gameInfo;
 
-    Handler UIHandler = new Handler() {
-        @Override
-        public void handleMessage(Message incomingMessage) {
-            if(active) {
-                switch (incomingMessage.arg1) {
-                    case 0:
-                        Message refreshMessage = Message.obtain();
-                        refreshMessage.arg1 = 0;
-                        UIHandler.sendMessageDelayed(refreshMessage, 5000);
-                        refreshGameInfo();
-                        break;
-                    default:
-                        //System.out.println("default");
-                        break;
-                }
-            }
+    static TextView gameNameTextView;
+    static TextView playersNamesTextView;
+    static TextView statusTextView;
 
-        }
-    };
+    static Button startGameButton;
+    static Button joinGameButton;
 
-
-
-
-
+    static Handler uiHandler;
 
 
 
@@ -59,102 +34,127 @@ public class JoinGameActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_game);
 
-        Intent input = getIntent();
-
-        Globals.multiplayerGameId = input.getIntExtra("gameId", -1);
-        Globals.multiplayerGameName = input.getStringExtra("gameName");
-        TextView titleText = (TextView) findViewById(R.id.textGameName);
-        titleText.setText("Game Name: " + Globals.multiplayerGameName);
-        Globals.multiplayerFetchingGameStatus = true;
-        Globals.multiplayerFetchingPlayerNames = true;
-        Globals.multiplayerGamePlayerId = -1;
-        playersNames = (TextView) findViewById(R.id.textPlayerNames);
-        playersNames.setText("Fetching current players...");
-        UIHandler.sendEmptyMessage(0);
-        Globals.multiplayerGameIsNew = true;
-
-
+        // finding inflated textview and buttons
+        gameNameTextView = (TextView) findViewById(R.id.textGameName);
+        playersNamesTextView = (TextView) findViewById(R.id.textPlayerNames);
         statusTextView = (TextView)findViewById(R.id.textViewStatus);
-
         joinGameButton = (Button) findViewById(R.id.buttonJoinGame);
-        joinGameButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if(Globals.userName.equals("")) {
-                    statusTextView.setText("Error, you have no username");
-                }
-                else {
-                    statusTextView.setText("Joining");
-
-
-                    JoinGameSoapTask joinGame = new JoinGameSoapTask(Globals.multiplayerGameId, Globals.userName);
-                    joinGame.execute();
-                }
-            }
-        });
-        joinGameButton.setVisibility(View.INVISIBLE);
         startGameButton = (Button) findViewById(R.id.buttonStartGame);
-        startGameButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if(Globals.userName.equals("")) {
-                    statusTextView.setText("Error, you have no username");
-                }
-                else {
-                    statusTextView.setText("Starting...");
 
-                    StartGameSoapTask startGame = new StartGameSoapTask(Globals.multiplayerGameId, Globals.userName);
-                    startGame.execute();
-                }
+        // setting up the on click listeners
+        joinGameButton.setOnClickListener(joinButtonListener);
+        startGameButton.setOnClickListener(startGameListener);
+
+
+        // this allows the background thread to call for ui updates
+        uiHandler = new Handler() {
+            // this will handle the notification gets from background thread
+            @Override
+            public void handleMessage(Message msg) {
+                // make necessary changes to UI
+                updateUI();
             }
-        });
-        startGameButton.setVisibility(View.INVISIBLE);
-
-    }
+        };
 
 
-    public void refreshGameInfo() {
+        // getting the background thread set up
+        Globals.setUpBackgroundThread(uiHandler);
 
-        // refresh player names
-        ListPlayersSoapTask listPlayers = new ListPlayersSoapTask(playersNames, Globals.multiplayerGameId);
-        listPlayers.execute();
+                                                                                                                                                                                                                                                                                                                                                                                                                      }
 
-        // check to see if the game has started
-        IsGameFormingSoapTask checkForming = new IsGameFormingSoapTask(Globals.multiplayerGameId);
-        checkForming.execute();
-
-        if((!Globals.multiplayerGameIsNew) && (Globals.multiplayerGamePlayerId >= 0)) {
-            // game has started, progressing to the next screen
-            Intent intent = new Intent(JoinGameActivity.this, MultiplayerGameActivity.class);
-            startActivity(intent);
-        }
-        if(Globals.multiplayerFetchingGameStatus) {
-            // the first soap call has yet to return
-            statusTextView.setText("Fetching game information");
+    public void updateUI() {
+        if(gameInfo == null) {
+            return;
         }
         else {
-            joinGameButton.setVisibility(View.VISIBLE);
-            if(Globals.multiplayerGameIsNew) {
-                if (Globals.multiplayerGamePlayerId == -1) {
-                    statusTextView.setText("This game is still forming, you can join!");
+            Toast.makeText(getApplicationContext(), "updating game " + gameInfo.gameId, Toast.LENGTH_SHORT).show();
+
+            // game name
+            gameNameTextView.setText("Game name: " + gameInfo.gameName);
+
+            //update current players textView
+            if(gameInfo.playerNames.length == 0) {
+                playersNamesTextView.setText("Players: None");
+            }
+            else {
+                String playerNamesString = "Players: " + gameInfo.playerNames[0];
+                for (int i = 1; i < gameInfo.playerNames.length; i++) {
+                    playerNamesString += ", " + gameInfo.playerNames[i];
+                }
+                playersNamesTextView.setText(playerNamesString);
+            }
+
+
+            //buttons
+            if(Globals.userName != null || Globals.userName.equals("")) {
+                if((Globals.multiplayerGamePlayerId = gameInfo.playerHasJoinedGame(Globals.userName)) >= 0) {
+
+                    if(gameInfo.gameIsNew) {
+                        // the player has joined a game that is still forming, giving them the option to start the game
+                        statusTextView.setText("You may start the game");
+                        joinGameButton.setVisibility(View.INVISIBLE);
+                        startGameButton.setVisibility(View.VISIBLE);
+                    }
+                    else {
+                        // the player has joined a game that has already started... starting the game
+                        Intent myIntent = new Intent(getApplicationContext(), MultiplayerGameActivity.class);
+                        startActivity(myIntent);
+                    }
                 }
                 else {
-                    statusTextView.setText("You have joined, waiting for the game to start");
-                    joinGameButton.setVisibility(View.INVISIBLE);
-                    startGameButton.setVisibility(View.VISIBLE);
+                    if(gameInfo.gameIsNew) {
+                        // the game is new and the player hasn't joined, giving them the option to join
+                        statusTextView.setText("The game is forming");
+                        joinGameButton.setVisibility(View.VISIBLE);
+                        startGameButton.setVisibility(View.INVISIBLE);
+                    }
+                    else {
+                        // the game has started and the player hadn't joined
+                        statusTextView.setText("The game has already started without you!");
+                        joinGameButton.setVisibility(View.INVISIBLE);
+                        startGameButton.setVisibility(View.INVISIBLE);
+                    }
+
                 }
             }
             else {
-                if(Globals.multiplayerGamePlayerId == -1) {
-                    statusTextView.setText("This game is already underway");
-                    joinGameButton.setText("Re-join");
-                }
-                else {
-                    statusTextView.setText("Starting game...");
-                }
+                statusTextView.setText("You have to have a username to interact with the games");
+                joinGameButton.setVisibility(View.INVISIBLE);
+                startGameButton.setVisibility(View.INVISIBLE);
             }
         }
 
-
     }
+
+
+    private View.OnClickListener joinButtonListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if(Globals.userName.equals("")) {
+                statusTextView.setText("Error, you have no username");
+            }
+            else {
+                statusTextView.setText("Joining");
+
+
+                Globals.backgroundTaskThread.getHandlerToMsgQueue().sendEmptyMessage(PartyCardsInterface.JOIN_GAME);
+            }
+        }
+    };
+
+    private View.OnClickListener startGameListener = new View.OnClickListener() {
+        public void onClick(View v) {
+            if(Globals.userName.equals("")) {
+                statusTextView.setText("Error, you have no username");
+            }
+            else {
+                statusTextView.setText("Starting...");
+
+                Globals.backgroundTaskThread.getHandlerToMsgQueue().sendEmptyMessage(PartyCardsInterface.STAR_NEW_GAME);
+            }
+        }
+    };
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -181,19 +181,18 @@ public class JoinGameActivity extends Activity {
     @Override
     protected void onResume() {
         super.onResume();
-        active = true;
-        if(!UIHandler.hasMessages(0)) {
-            // handler doesn't have the message, so start periodic refreshes again
-            UIHandler.sendEmptyMessage(0);
-        }
-        // else the message still exists in the message queue, no need to double up on refreshing
+        Globals.windowIsInFocus = true;
+        Globals.defaultMessage = PartyCardsInterface.GET_BASIC_GAME_DATA_SINGLE_GAME;
+        Globals.backgroundTaskThread.getHandlerToMsgQueue().sendEmptyMessage(Globals.defaultMessage);
     }
 
     @Override
     protected void onPause() {
         super.onPause();
-        active = false;
+        Globals.windowIsInFocus = false;
     }
 }
+
+
 
 

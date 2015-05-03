@@ -105,7 +105,7 @@
             android:label="@string/title_activity_multiplayer_game" >
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.csci491.PartyCards.JoinGameActivity" />
+                android:value="com.csci491.PartyCards.ListMultiplayerGamesActivity" />
         </activity>
     </application>
 

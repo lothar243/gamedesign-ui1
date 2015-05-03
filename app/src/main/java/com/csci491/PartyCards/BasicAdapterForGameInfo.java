@@ -9,38 +9,35 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 
 
-public class BasicAdapterWithID extends BaseAdapter {
+public class BasicAdapterForGameInfo extends BaseAdapter {
     private LayoutInflater mInflater;
-    private List<String> data;
-    private List<Integer> IDs;
+    private ArrayList<BasicGameData> games;
 
-    public BasicAdapterWithID(Context context) {
+    public BasicAdapterForGameInfo(Context context) {
         mInflater = LayoutInflater.from(context);
         clear();
     }
-    public BasicAdapterWithID(Context context, List<String> data, List<Integer> ID) {
+    public BasicAdapterForGameInfo(Context context, ArrayList<BasicGameData> games) {
         mInflater = LayoutInflater.from(context);
-        this.data = data;
-        this.IDs = ID;
+        this.games = games;
     }
 
     @Override
     public int getCount() {
-        return data.size();
+        return games.size();
     }
 
     @Override
     public Object getItem(int position) {
-        return data.get(position);
+        return games.get(position);
     }
 
     @Override
     public long getItemId(int position) {
-        return IDs.get(position);
+        return games.get(position).gameId;
     }
 
     @Override
@@ -52,25 +49,22 @@ public class BasicAdapterWithID extends BaseAdapter {
             view = convertView;
         }
 
-        view.setTag(data.get(position));
+        view.setTag(games.get(position));
         TextView listItemTextView = (TextView)view.findViewById(R.id.listItemText);
-        listItemTextView.setText(data.get(position));
+        listItemTextView.setText(games.get(position).gameName);
         Message viewInfo = new Message();
-        viewInfo.arg1 = IDs.get(position);
-        viewInfo.obj = data.get(position);
+        viewInfo.obj = games.get(position);
         view.setTag(viewInfo);
 
         return view;
     }
 
-    public void add(String dataString, Integer ID) {
-        data.add(dataString);
-        IDs.add(ID);
+    public void add(BasicGameData additionalGame) {
+        games.add(additionalGame);
     }
 
     public void clear() {
-        data = new ArrayList<String>();
-        IDs = new ArrayList<Integer>();
+        games = new ArrayList<BasicGameData>();
     }
 
 }

@@ -40,13 +40,6 @@
             android:layout_gravity="bottom"
             android:layout_weight="1"/>
 
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/refresh"
-            android:id="@+id/ButtonRefreshGameList"
-            android:layout_gravity="bottom"
-            android:layout_weight="1"/>
 
     </LinearLayout>
 

@@ -1,6 +1,10 @@
 package com.csci491.PartyCards.NetworkTasks;
 
 
+import com.csci491.PartyCards.BasicGameData;
+import com.csci491.PartyCards.InGameData;
+
+
 //Service Endpoint Interface
 public interface PartyCardsInterface {
 
@@ -55,5 +59,15 @@ public interface PartyCardsInterface {
 
     public static final int ROUND_SUMMARY = 17;
     String [] roundSummary(int gameId);
+
+    public static final int GET_GAME_DATA = 18;
+    InGameData getGameData(int gameId, int playerId);
+
+    public static final int GET_BASIC_GAME_DATA = 19;
+    BasicGameData [] getBasicGameData();
+
+    public static final int GET_BASIC_GAME_DATA_SINGLE_GAME = 20;
+    BasicGameData getBasicGameDataSingleGame(int gameId);
+
 
 }

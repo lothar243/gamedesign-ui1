@@ -2,6 +2,7 @@ package com.csci491.PartyCards;
 
 import android.app.AlertDialog;
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,39 +17,35 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.csci491.PartyCards.NetworkTasks.CreateNewGameSoapTask;
-import com.csci491.PartyCards.NetworkTasks.GetGamesSoapTask;
 import com.csci491.PartyCards.NetworkTasks.PartyCardsInterface;
 
 
 public class ListMultiplayerGamesActivity extends ListActivity {
-    Handler listUpdateHandler;
-
+    public static Handler uiHandler;
+    public static BasicAdapterForGameInfo gameNameAdapter;
+    public static BasicGameData [] listedGames;
+    static  Context appContext;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_multiplayer_game);
-        final BasicAdapterWithID gameNameAdapter = new BasicAdapterWithID(this);
+        gameNameAdapter = new BasicAdapterForGameInfo(this);
 
         // set up the handler to listen for when the game names have been retrieved
-        listUpdateHandler = new Handler() {
+        uiHandler = new Handler() {
+            // this will handle the notification gets from background thread
             @Override
-            public void handleMessage(Message incomingMessage) {
-                // arg1 signals the method 0: clear, 1: add
-                // arg2 contains the id for the add function
-                if(incomingMessage.arg1 == 0) {
-                    gameNameAdapter.clear();
-                }
-                else if(incomingMessage.arg1 == 1) {
-                    gameNameAdapter.add((String) incomingMessage.obj, incomingMessage.arg2);
-                    gameNameAdapter.notifyDataSetChanged();
-                }
+            public void handleMessage(Message msg) {
+                // make necessary changes to UI
+                updateUI();
             }
         };
 
-        refreshList();
 
+        Globals.setUpBackgroundThread(uiHandler);
+
+        appContext = getApplicationContext();
         // finally, set up the adapter that takes care of generating the list
         setListAdapter(gameNameAdapter);
 
@@ -58,43 +55,51 @@ public class ListMultiplayerGamesActivity extends ListActivity {
                 createNewGameDialog();
             }
         });
-        final Button refreshButton = (Button)findViewById(R.id.ButtonRefreshGameList);
-        refreshButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                refreshList();
-            }
-        });
 
         if(Globals.userName.equals("")) {
             promptForUserName();
         }
 
+
     }
 
-    public void refreshList() {
-
-
-        // start the aSyncTasks that fetch the gameIds of the active games and then go on to fetch their names
-        // they each call the handler individually to update the list that is displayed
-        GetGamesSoapTask updateGameList = new GetGamesSoapTask(listUpdateHandler);
-        updateGameList.execute();
+    public static void updateUI() {
+        if(listedGames != null) {
+            gameNameAdapter.clear();
+            for (BasicGameData game : listedGames) {
+                gameNameAdapter.add(game);
+            }
+            gameNameAdapter.notifyDataSetChanged();
+            Toast.makeText(appContext, "updating " + listedGames.length, Toast.LENGTH_SHORT).show();
+        }
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        Globals.windowIsInFocus = true;
+        Globals.defaultMessage = PartyCardsInterface.GET_GAMES;
+        Globals.backgroundTaskThread.getHandlerToMsgQueue().sendEmptyMessage(Globals.defaultMessage);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        Globals.windowIsInFocus = false;
+    }
 
     protected void onListItemClick(ListView listView, View currentView, int position, long id) {
-        Intent joinGameIntent = new Intent(ListMultiplayerGamesActivity.this, JoinGameActivity.class);
-        Message viewInfo = (Message) currentView.getTag();
+        Globals.multiplayerGameId = listedGames[position].gameId;
 
-        joinGameIntent.putExtra("gameId", viewInfo.arg1);
-        joinGameIntent.putExtra("gameName", String.valueOf(viewInfo.obj));
+        Intent joinGameIntent = new Intent(ListMultiplayerGamesActivity.this, JoinGameActivity.class);
+
         startActivity(joinGameIntent);
-//        Toast debugToast = Toast.makeText(this, (currentView.getTag()).toString(), Toast.LENGTH_SHORT);
-//        debugToast.show();
+
     }
 
     private void createNewGameDialog() {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Title");
+        builder.setTitle("Game Title");
 
 // Set up the input
         final EditText input = new EditText(this);
@@ -106,8 +111,10 @@ public class ListMultiplayerGamesActivity extends ListActivity {
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-                CreateNewGameSoapTask mySoapTask = new CreateNewGameSoapTask(listUpdateHandler, input.getText().toString());
-                mySoapTask.execute();
+                Message createGameMessage = Message.obtain();
+                createGameMessage.what = PartyCardsInterface.CREATE_NEW_GAME;
+                createGameMessage.obj = input.getText().toString();
+                Globals.backgroundTaskThread.getHandlerToMsgQueue().sendMessage(createGameMessage);
             }
         });
         builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

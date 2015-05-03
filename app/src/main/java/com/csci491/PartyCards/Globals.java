@@ -2,6 +2,7 @@ package com.csci491.PartyCards;
 
 import android.app.Application;
 import android.content.Context;
+import android.os.Handler;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -45,26 +46,18 @@ public class Globals extends Application
 
 	public static boolean multiplayerGameIsNew = false;
 	public static int multiplayerGameId;
-	public static String multiplayerGameName;
 	public static int multiplayerGamePlayerId;
     public static boolean multiplayerFetchingPlayerNames; // set to true until the first soap request returns
     public static boolean multiplayerFetchingGameStatus; // set to true until the first soap request returns
 
-	//black card
-	public static String multiplayerCurrentBlackCard;
+	public static WorkerThread backgroundTaskThread;
+	public static int defaultMessage;
+	public static boolean windowIsInFocus;
+	public static int multiplayerRefreshRate = 3000; // delay time between refreshing game data
 
-	//white cards
-	public static String[] multiplayerCurrentHand;
-	public static int multiplayerWhiteCardIndex;
 
 	//player status
-	public static int multiplayerPlayerIsCardCzar;
 
-	public static int multiplayerTurnPhase;
-	public static int multiplayerTurnNumber;
-	public static int multiplayerNumberOfPlayersChoosing;
-	public static int multiplayerSelectionAccepted;
-	public static boolean previewPhase;
 	public static String multiplayerServerIPAddress = "192.168.1.2";
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -216,6 +209,20 @@ public class Globals extends Application
 		Globals.winnerName = winnerName;
 	}
 
-    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	public static void setUpBackgroundThread(Handler uiHandler) {
+		if(backgroundTaskThread == null) {
+			backgroundTaskThread = new WorkerThread(uiHandler);
+			backgroundTaskThread.start();
+			while (backgroundTaskThread.getHandlerToMsgQueue() == null) {
+				// delay until the backgroundThread gets set up
+			}
+		}
+		else {
+			backgroundTaskThread.setUiHandler(uiHandler);
+		}
+
+	}
+
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 	
 }

@@ -2,7 +2,9 @@ package com.csci491.PartyCards.NetworkTasks;
 
 import android.util.Log;
 
+import com.csci491.PartyCards.BasicGameData;
 import com.csci491.PartyCards.Globals;
+import com.csci491.PartyCards.InGameData;
 
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
@@ -36,14 +38,14 @@ public class NetworkMethods implements PartyCardsInterface{
 
     private void init(String methodName) {
         soapAction = formProperSoapAction(methodName);
-        request = new SoapObject(SoapTask.NAMESPACE, methodName);
+        request = new SoapObject(NAMESPACE, methodName);
     }
 
     private SoapObject makeSoapCall() {
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.setOutputSoapObject(request);
 
-        HttpTransportSE httpTransport = new HttpTransportSE(SoapTask.URL);
+        HttpTransportSE httpTransport = new HttpTransportSE(URL);
 
         httpTransport.debug = DEBUG;
         try {
@@ -145,7 +147,7 @@ public class NetworkMethods implements PartyCardsInterface{
     }
     public int createNewGame(String gameName) {
         init("createNewGame");
-        request.addProperty("arg1", gameName);
+        request.addProperty("arg0", gameName);
         return parseForInt(makeSoapCall());
     }
     @Override
@@ -226,7 +228,7 @@ public class NetworkMethods implements PartyCardsInterface{
     public void startNewGame(int gameId) {
         init("startNewGame");
         request.addProperty("arg0", gameId);
-        return;
+        makeSoapCall();
     }
 
     @Override
@@ -253,5 +255,100 @@ public class NetworkMethods implements PartyCardsInterface{
         init("roundSummary");
         request.addProperty("arg0", gameId);
         return parseForStringArray(makeSoapCall());
+    }
+
+    @Override
+    public InGameData getGameData(int gameId, int playerId) {
+        try {
+            init("getGameData");
+            request.addProperty("arg0", gameId);
+            request.addProperty("arg1", playerId);
+
+
+            SoapObject result = makeSoapCall();
+
+            result = (SoapObject) result.getProperty(0);
+            InGameData output = new InGameData();
+
+            //blackCard
+//        System.out.println("numberOfPlayersChoosing" + result.getProperty(6).toString());
+
+            output.blackCard = result.getProperty(0).toString();
+            output.roundText = result.getProperty(1).toString();
+            output.playerId = Integer.parseInt(result.getProperty(2).toString());
+            output.playerIsCardCzar = Integer.parseInt(result.getProperty(3).toString());
+            output.turnPhase = Integer.parseInt(result.getProperty(4).toString());
+            output.turnNumber = Integer.parseInt(result.getProperty(5).toString());
+            output.numberOfPlayersChoosing = Integer.parseInt(result.getProperty(6).toString());
+            int handSize = result.getPropertyCount() - 7;
+            output.hand = new String[handSize];
+            for (int i = 0; i < handSize; i++) {
+                output.hand[i] = result.getProperty(i + 7).toString();
+            }
+            return output;
+        }
+        catch (Exception e) {
+            Log.e("NetworkMethods", "Error with getGameData()");
+            Log.e("NetworkMethods", e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public BasicGameData [] getBasicGameData() {
+        init("getBasicGameData");
+        SoapObject result = makeSoapCall();
+        try {
+            result = (SoapObject) result.getProperty(0);
+
+            int numGames = result.getPropertyCount();
+            BasicGameData[] output = new BasicGameData[numGames];
+            for (int i = 0; i < numGames; i++) {
+                SoapObject container = (SoapObject) result.getProperty(i);
+                BasicGameData game = new BasicGameData();
+                game.gameId = Integer.parseInt(container.getProperty(0).toString());
+                game.gameName = container.getProperty(1).toString();
+                game.gameIsNew = Boolean.parseBoolean(container.getProperty(2).toString());
+                int numPlayers = container.getPropertyCount() - 3;
+                game.playerNames = new String[numPlayers];
+                for (int j = 0; j < numPlayers; j++) {
+                    game.playerNames[j] = container.getProperty(j + 3).toString();
+                }
+                output[i] = game;
+
+            }
+            return output;
+        }
+        catch(Exception e) {
+            Log.e("NetworkMethods", "Error with getBasicGameData()");
+            Log.e("NetworkMethods", e.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    public BasicGameData getBasicGameDataSingleGame(int gameId) {
+        try {
+            init("getBasicGameDataSingleGame");
+            request.addProperty("arg0", gameId);
+
+            SoapObject result = (SoapObject) makeSoapCall().getProperty(0);
+            BasicGameData game = new BasicGameData();
+            game.gameId = Integer.parseInt(result.getProperty(0).toString());
+            game.gameName = result.getProperty(1).toString();
+            game.gameIsNew = Boolean.parseBoolean(result.getProperty(2).toString());
+            int numPlayers = result.getPropertyCount() - 3;
+            game.playerNames = new String[numPlayers];
+            for (int j = 0; j < numPlayers; j++) {
+                game.playerNames[j] = result.getProperty(j + 3).toString();
+            }
+
+            return game;
+        }
+        catch (Exception e) {
+            Log.e("NetworkMethods", "Error with getBasicGameDataSingleGame()");
+            Log.e("NetworkMethods", e.getMessage());
+        }
+        return null;
     }
 }

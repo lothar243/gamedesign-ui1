@@ -47,6 +47,7 @@ public class MainActivity extends Activity {
 		});
 		buttonStartSingleplayer.setOnClickListener(new OnClickListener() {
 			public void onClick(View v) {
+
 				Intent intent = new Intent(MainActivity.this, NewGameActivity.class);
 				startActivity(intent);
 				// finish();
