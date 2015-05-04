@@ -289,7 +289,6 @@ public class NetworkMethods implements PartyCardsInterface{
         }
         catch (Exception e) {
             Log.e("NetworkMethods", "Error with getGameData()");
-            Log.e("NetworkMethods", e.getMessage());
         }
         return null;
     }
@@ -321,7 +320,6 @@ public class NetworkMethods implements PartyCardsInterface{
         }
         catch(Exception e) {
             Log.e("NetworkMethods", "Error with getBasicGameData()");
-            Log.e("NetworkMethods", e.getMessage());
         }
         return null;
     }
@@ -347,7 +345,6 @@ public class NetworkMethods implements PartyCardsInterface{
         }
         catch (Exception e) {
             Log.e("NetworkMethods", "Error with getBasicGameDataSingleGame()");
-            Log.e("NetworkMethods", e.getMessage());
         }
         return null;
     }
