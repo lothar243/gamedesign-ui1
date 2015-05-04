@@ -22,6 +22,7 @@ import com.csci491.PartyCards.NetworkTasks.PartyCardsInterface;
 public class MultiplayerGameActivity extends Activity {
 
 
+    public static int numberOfPlayersSelecting;
     TextView blackCardTextView;
     Button visibleWhiteCardButton;
     Button submitButton;
@@ -97,6 +98,7 @@ public class MultiplayerGameActivity extends Activity {
 
         // now we're setting up the additional ui, like the buttons and instructions
         if(previewPhase) {
+            numberOfPlayersSelecting = -1;
             textViewStatus.setText("Review game stats");
             submitButton.setText("Proceed");
             submitButton.setVisibility(View.VISIBLE);
@@ -106,8 +108,14 @@ public class MultiplayerGameActivity extends Activity {
                 case 1: // normal players are choosing cards, card czar is waiting
                     submitButton.setVisibility(View.VISIBLE);
                     if (thisGame.playerIsCardCzar == 0) { // normal players
-                        textViewStatus.setText("Choose your card");
-                        submitButton.setText("Submit");
+                        if(numberOfPlayersSelecting == -1) {
+                            textViewStatus.setText("Choose your card");
+                            submitButton.setText("Submit");
+                        }
+                        else {
+                            textViewStatus.setText("Your card has been submitted");
+                            submitButton.setText("Change selection");
+                        }
                     } else { // card czar
                         submitButton.setVisibility(View.INVISIBLE);
 //                        backgroundTaskThread.periodicRefresh();
@@ -115,6 +123,7 @@ public class MultiplayerGameActivity extends Activity {
                     break;
                 case 2: // card czar is choosing a card, other players can view selection
                     if (thisGame.playerIsCardCzar == 0) { // normal players
+                        textViewStatus.setText("The card czar is choosing a card, have a look at their choices...");
                         submitButton.setVisibility(View.INVISIBLE);
 //                        backgroundTaskThread.periodicRefresh();
                     } else { // card czar

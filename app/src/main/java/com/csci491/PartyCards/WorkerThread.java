@@ -36,13 +36,14 @@ public class WorkerThread extends Thread {
             public void handleMessage(Message msg) {
                 switch (msg.what) {
                     case PartyCardsInterface.CHOOSE_CARD:
-                        networkMethods.chooseCard(Globals.multiplayerGameId, Globals.multiplayerGamePlayerId, MultiplayerGameActivity.handIndex);
+                        MultiplayerGameActivity.numberOfPlayersSelecting = networkMethods.chooseCard(Globals.multiplayerGameId, Globals.multiplayerGamePlayerId, MultiplayerGameActivity.handIndex);
                         break;
                     case PartyCardsInterface.GET_GAME_DATA:
                         InGameData updatedData = networkMethods.getGameData(Globals.multiplayerGameId, Globals.multiplayerGamePlayerId);
                         if(MultiplayerGameActivity.thisGame == null || MultiplayerGameActivity.thisGame.turnNumber < updatedData.turnNumber) {
                             MultiplayerGameActivity.previewPhase = true;
                         }
+
                         if(MultiplayerGameActivity.previewPhase) {
                             updatedData.hand = networkMethods.roundSummary(Globals.multiplayerGameId);
                         }

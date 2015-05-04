@@ -259,7 +259,7 @@ public class NetworkMethods implements PartyCardsInterface{
 
     @Override
     public InGameData getGameData(int gameId, int playerId) {
-        try {
+//        try {
             init("getGameData");
             request.addProperty("arg0", gameId);
             request.addProperty("arg1", playerId);
@@ -286,11 +286,11 @@ public class NetworkMethods implements PartyCardsInterface{
                 output.hand[i] = result.getProperty(i + 7).toString();
             }
             return output;
-        }
-        catch (Exception e) {
-            Log.e("NetworkMethods", "Error with getGameData()");
-        }
-        return null;
+//        }
+//        catch (Exception e) {
+//            Log.e("NetworkMethods", "Error with getGameData()");
+//        }
+//        return null;
     }
 
     @Override
