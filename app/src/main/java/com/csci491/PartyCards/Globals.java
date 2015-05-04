@@ -58,7 +58,7 @@ public class Globals extends Application
 
 	//player status
 
-	public static String multiplayerServerIPAddress = "192.168.1.2";
+	public static String multiplayerServerIPAddress = "10.8.20";
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 

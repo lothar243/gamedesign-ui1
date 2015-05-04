@@ -22,9 +22,10 @@ public class NetworkMethods implements PartyCardsInterface{
 
     private static final boolean DEBUG = false;
 
-    public static final String WSDL_URL = "http://" + Globals.multiplayerServerIPAddress + ":52244/ws/partyCards?wsdl"; // for manual inspection of the wsdl
-    public static final String NAMESPACE = "http://java.main/";
-    public static final String URL = "http://" + Globals.multiplayerServerIPAddress + ":52244/ws/partyCards/";
+    public static String ipAddress;
+    public static String WSDL_URL = "http://" + Globals.multiplayerServerIPAddress + ":52244/ws/partyCards?wsdl"; // for manual inspection of the wsdl
+    public static String NAMESPACE = "http://java.main/";
+    public static String URL = "http://" + Globals.multiplayerServerIPAddress + ":52244/ws/partyCards/";
 
 
     String methodName;
@@ -34,6 +35,19 @@ public class NetworkMethods implements PartyCardsInterface{
 
     protected String formProperSoapAction(String method) {
         return "\"" + NAMESPACE + "PartyCardsInterface/" + method + "Request\"";
+    }
+
+    public NetworkMethods(String ipAddress) {
+        WSDL_URL = "http://" + ipAddress + ":52244/ws/partyCards?wsdl"; // for manual inspection of the wsdl
+        NAMESPACE = "http://java.main/";
+        URL = "http://" + ipAddress + ":52244/ws/partyCards/";
+
+    }
+    public NetworkMethods() {
+        WSDL_URL = "http://" + Globals.multiplayerServerIPAddress + ":52244/ws/partyCards?wsdl"; // for manual inspection of the wsdl
+        NAMESPACE = "http://java.main/";
+        URL = "http://" + Globals.multiplayerServerIPAddress + ":52244/ws/partyCards/";
+
     }
 
     private void init(String methodName) {
@@ -56,7 +70,9 @@ public class NetworkMethods implements PartyCardsInterface{
             Log.d("SOAP", "IOException on " + request.toString());
         } catch (XmlPullParserException e) {
             Log.d("SOAP", "HttpResponseException on " + request.toString());
-        } //send request
+        } catch (Exception e) {
+            Log.e("SOAP", "Other error");//send request
+        }
 
         SoapObject result;
 

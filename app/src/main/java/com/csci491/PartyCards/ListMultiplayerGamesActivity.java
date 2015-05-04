@@ -174,7 +174,7 @@ public class ListMultiplayerGamesActivity extends ListActivity {
 
                 final EditText input = new EditText(this);
                 // Specify the type of input expected;
-                input.setInputType(InputType.TYPE_CLASS_NUMBER);
+                input.setInputType(InputType.TYPE_CLASS_PHONE);
                 builder.setView(input);
                 input.setText(Globals.multiplayerServerIPAddress);
 
@@ -183,6 +183,9 @@ public class ListMultiplayerGamesActivity extends ListActivity {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                             Globals.multiplayerServerIPAddress = input.getText().toString();
+                        System.out.println("Server IP: " + Globals.multiplayerServerIPAddress);
+                        Globals.backgroundTaskThread.getHandlerToMsgQueue().sendEmptyMessage(WorkerThread.CHANGE_IP_ADDRESS);
+
                     }
                 });
                 builder.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {

@@ -8,6 +8,7 @@ import com.csci491.PartyCards.NetworkTasks.NetworkMethods;
 import com.csci491.PartyCards.NetworkTasks.PartyCardsInterface;
 
 public class WorkerThread extends Thread {
+    public static final int CHANGE_IP_ADDRESS = -10;
     private final static String TAG = WorkerThread.class.getSimpleName(); // for the debugger
     static NetworkMethods networkMethods;
 
@@ -72,6 +73,9 @@ public class WorkerThread extends Thread {
                         if(playerId >= 0) {
                             Globals.multiplayerGamePlayerId = playerId;
                         }
+                        break;
+                    case CHANGE_IP_ADDRESS:
+                        networkMethods = new NetworkMethods(Globals.multiplayerServerIPAddress);
                         break;
                     default:
 
