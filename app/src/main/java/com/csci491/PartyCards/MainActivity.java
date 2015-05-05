@@ -50,7 +50,7 @@ public class MainActivity extends Activity {
 
 				Intent intent = new Intent(MainActivity.this, NewGameActivity.class);
 				startActivity(intent);
-				// finish();
+				finish();
 			}
 		});
 	}

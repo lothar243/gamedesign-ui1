@@ -94,7 +94,7 @@ public class ListMultiplayerGamesActivity extends ListActivity {
         Intent joinGameIntent = new Intent(ListMultiplayerGamesActivity.this, JoinGameActivity.class);
 
         startActivity(joinGameIntent);
-
+        finish();
     }
 
     private void createNewGameDialog() {

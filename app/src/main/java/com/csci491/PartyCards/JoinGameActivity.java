@@ -99,6 +99,7 @@ public class JoinGameActivity extends Activity {
                         // the player has joined a game that has already started... starting the game
                         Intent myIntent = new Intent(getApplicationContext(), MultiplayerGameActivity.class);
                         startActivity(myIntent);
+                        finish();
                     }
                 }
                 else {

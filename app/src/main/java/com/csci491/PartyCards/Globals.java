@@ -44,21 +44,18 @@ public class Globals extends Application
 	private static boolean isGameWinner;
 	private static String winnerName;
 
-	public static boolean multiplayerGameIsNew = false;
 	public static int multiplayerGameId;
 	public static int multiplayerGamePlayerId;
-    public static boolean multiplayerFetchingPlayerNames; // set to true until the first soap request returns
-    public static boolean multiplayerFetchingGameStatus; // set to true until the first soap request returns
 
 	public static WorkerThread backgroundTaskThread;
 	public static int defaultMessage;
 	public static boolean windowIsInFocus;
-	public static int multiplayerRefreshRate = 3000; // delay time between refreshing game data
+	public static final int multiplayerRefreshRate = 3000; // delay time between refreshing game data
 
 
 	//player status
 
-	public static String multiplayerServerIPAddress = "10.8.20";
+	public static String multiplayerServerIPAddress = "10.8.20.0";
 
 		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
