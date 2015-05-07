@@ -11,11 +11,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
-
 import com.csci491.PartyCards.NetworkTasks.PartyCardsInterface;
 
 
-public class JoinGameActivity extends Activity {
+public class JoinGameActivity extends Activity
+{
     public static BasicGameData gameInfo;
 
     static TextView gameNameTextView;

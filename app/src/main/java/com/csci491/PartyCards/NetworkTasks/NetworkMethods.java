@@ -15,84 +15,121 @@ import org.xmlpull.v1.XmlPullParserException;
 
 import java.io.IOException;
 
-/**
- * Created by Jeff on 4/29/2015.
- */
-public class NetworkMethods implements PartyCardsInterface{
+// ====================================================================================================================
+// NetworkMethods.java
+// --------------------------------------------------------------------------------------------------------------------
+// Party Cards: Android Networking Project
+// CSCI-466: Networks
+// Jeff Arends, Lee Curran, Angela Gross, Andrew Meissner
+// Spring 2015
+// --------------------------------------------------------------------------------------------------------------------
+// SOAP Networking client
+// ====================================================================================================================
 
+public class NetworkMethods implements PartyCardsInterface
+{
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // NETWORKMETHODS ATTRIBUTES
     private static final boolean DEBUG = false;
-
     public static String ipAddress;
     public static String WSDL_URL = "http://" + Globals.multiplayerServerIPAddress + ":52244/ws/partyCards?wsdl"; // for manual inspection of the wsdl
     public static String NAMESPACE = "http://java.main/";
     public static String URL = "http://" + Globals.multiplayerServerIPAddress + ":52244/ws/partyCards/";
-
-
     String methodName;
     SoapObject request;
     String soapAction;
 
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    protected String formProperSoapAction(String method) {
-        return "\"" + NAMESPACE + "PartyCardsInterface/" + method + "Request\"";
-    }
-
-    public NetworkMethods(String ipAddress) {
+    // NETWORKMETHODS CONSTRUCTORS
+    public NetworkMethods(String ipAddress)
+    {
         WSDL_URL = "http://" + ipAddress + ":52244/ws/partyCards?wsdl"; // for manual inspection of the wsdl
         NAMESPACE = "http://java.main/";
         URL = "http://" + ipAddress + ":52244/ws/partyCards/";
 
     }
-    public NetworkMethods() {
+    public NetworkMethods()
+    {
         WSDL_URL = "http://" + Globals.multiplayerServerIPAddress + ":52244/ws/partyCards?wsdl"; // for manual inspection of the wsdl
         NAMESPACE = "http://java.main/";
         URL = "http://" + Globals.multiplayerServerIPAddress + ":52244/ws/partyCards/";
-
     }
 
-    private void init(String methodName) {
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    protected String formProperSoapAction(String method)
+    {
+        return "\"" + NAMESPACE + "PartyCardsInterface/" + method + "Request\"";
+    }
+
+    private void init(String methodName)
+    {
         soapAction = formProperSoapAction(methodName);
         request = new SoapObject(NAMESPACE, methodName);
     }
 
-    private SoapObject makeSoapCall() {
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    private SoapObject makeSoapCall()
+    {
         SoapSerializationEnvelope envelope = new SoapSerializationEnvelope(SoapEnvelope.VER11);
         envelope.setOutputSoapObject(request);
 
         HttpTransportSE httpTransport = new HttpTransportSE(URL);
 
         httpTransport.debug = DEBUG;
-        try {
+        try
+        {
             httpTransport.call(soapAction, envelope);
-        } catch (HttpResponseException e) {
+        }
+        catch (HttpResponseException e)
+        {
             Log.d("SOAP", "HttpResponseException on " + request.toString());
-        } catch (IOException e) {
+        }
+        catch (IOException e)
+        {
             Log.d("SOAP", "IOException on " + request.toString());
-        } catch (XmlPullParserException e) {
+        }
+        catch (XmlPullParserException e)
+        {
             Log.d("SOAP", "HttpResponseException on " + request.toString());
-        } catch (Exception e) {
+        } catch (Exception e)
+        {
             Log.e("SOAP", "Other error");//send request
         }
 
         SoapObject result;
 
         // debugging reports - show the outgoing and incoming xml
-        if(DEBUG) {
+        if(DEBUG)
+        {
             Log.d("Dump request: ", httpTransport.requestDump);
             Log.d("Dump response: ", httpTransport.responseDump);
         }
 
-        try {
+        try
+        {
             result = (SoapObject)envelope.bodyIn;
             return result;
-        } catch (Exception e) {
+        }
+        catch (Exception e)
+        {
             Log.d("SOAP", "Error with soap result");
         }
 
         return null;
     }
 
-    private Integer [] parseForIntArray(SoapObject soapResult) {
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    // PARSERS FOR SOAP OBJECTS
+    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    private Integer [] parseForIntArray(SoapObject soapResult)
+    {
         Integer [] output = null;
         try {
             SoapObject arrayContainer = (SoapObject) soapResult.getProperty(0);
@@ -107,132 +144,115 @@ public class NetworkMethods implements PartyCardsInterface{
         return output;
     }
 
-    private int parseForInt(SoapObject soapResult) {
+    private int parseForInt(SoapObject soapResult)
+    {
         int output = -1;
-        try {
+        try
+        {
             output = Integer.parseInt(soapResult.getProperty(0).toString());
 
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             Log.e("SOAP", "parseForInt - " + methodName);
         }
         return output;
     }
 
-    private String [] parseForStringArray(SoapObject soapResult) {
+    private String [] parseForStringArray(SoapObject soapResult)
+    {
         String [] output = null;
-        try {
+        try
+        {
             SoapObject arrayContainer = (SoapObject) soapResult.getProperty(0);
             output = new String[arrayContainer.getPropertyCount()];
-            for(int i = 0; i < output.length; i++) {
+            for(int i = 0; i < output.length; i++)
+            {
                 output[i] = arrayContainer.getProperty(i).toString();
             }
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             Log.e("SOAP", "parseForStringArray - " + methodName);
         }
         return output;
     }
 
-    private boolean parseForBoolean(SoapObject soapResult) {
+    private boolean parseForBoolean(SoapObject soapResult)
+    {
         boolean output = false;
-        try {
+        try
+        {
             output = Boolean.parseBoolean(soapResult.getProperty(0).toString());
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             Log.e("SOAP", "parseForBoolean - " + methodName);
         }
         return output;
     }
 
-    private String parseForString(SoapObject soapResult) {
+    private String parseForString(SoapObject soapResult)
+    {
         String output = "";
-        try {
+        try
+        {
             output = soapResult.getProperty(0).toString();
         }
-        catch (Exception e){
+        catch (Exception e)
+        {
             Log.e("SOAP", "parseForString - " + methodName);
         }
         return output;
     }
 
-    @Override
-    public Integer[] getGames() {
-        init("getGames");
-        return parseForIntArray(makeSoapCall());
-    }
-    public int createNewGame(String gameName) {
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    // GAME CREATION/DESTRUCTION SOAP CALLS
+    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    public int createNewGame(String gameName)
+    {
         init("createNewGame");
         request.addProperty("arg0", gameName);
         return parseForInt(makeSoapCall());
     }
+
     @Override
-    public int joinGame(int gameId, String userName) {
+    public boolean destroyGame(int gameId)
+    {
+        init("destroyGame");
+        request.addProperty("arg0", gameId);
+        return parseForBoolean(makeSoapCall());
+    }
+
+    @Override
+    public void startNewGame(int gameId)
+    {
+        init("startNewGame");
+        request.addProperty("arg0", gameId);
+        makeSoapCall();
+    }
+
+    @Override
+    public int joinGame(int gameId, String userName)
+    {
         init("joinGame");
         request.addProperty("arg0", gameId);
         request.addProperty("arg1", userName);
         return parseForInt(makeSoapCall());
     }
 
-    @Override
-    public String[] listPlayers(int gameId) {
-        init("listPlayers");
-        request.addProperty("arg0", gameId);
-        return parseForStringArray(makeSoapCall());
-    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    // OTHER GAME-RELATED SOAP CALLS
+    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
 
     @Override
-    public boolean destroyGame(int gameId) {
-        init("destroyGame");
-        request.addProperty("arg0", gameId);
-        return parseForBoolean(makeSoapCall());
-    }
-
-    public String getGameName(int gameId) {
-        init("getGameName");
-        request.addProperty("arg0", gameId);
-        return parseForString(makeSoapCall());
-    }
-
-    @Override
-    public boolean gameIsForming(int gameId) {
-        init("gameIsForming");
-        request.addProperty("arg0", gameId);
-        return parseForBoolean(makeSoapCall());
-    }
-
-    @Override
-    public int playerIsCardCzar(int gameId, int playerId) {
-        init("playerIsCardCzar");
-        request.addProperty("arg0", gameId);
-        request.addProperty("arg1", playerId);
-        return parseForInt(makeSoapCall());
-    }
-
-    @Override
-    public int getTurnPhase(int gameId) {
-        init("getTurnPhase");
-        request.addProperty("arg0", gameId);
-        return parseForInt(makeSoapCall());
-    }
-
-    @Override
-    public String[] getHand(int gameId, int playerId) {
-        init("getHand");
-        request.addProperty("arg0", gameId);
-        request.addProperty("arg1", playerId);
-        return parseForStringArray(makeSoapCall());
-    }
-
-    @Override
-    public String getBlackCard(int gameId) {
-        init("getBlackCard");
-        request.addProperty("arg0", gameId);
-        return parseForString(makeSoapCall());
-    }
-
-    @Override
-    public int chooseCard(int gameId, int playerId, int cardNumber) {
+    public int chooseCard(int gameId, int playerId, int cardNumber)
+    {
         init("chooseCard");
         request.addProperty("arg0", gameId);
         request.addProperty("arg1", playerId);
@@ -240,42 +260,86 @@ public class NetworkMethods implements PartyCardsInterface{
         return parseForInt(makeSoapCall());
     }
 
-    @Override
-    public void startNewGame(int gameId) {
-        init("startNewGame");
+    public Integer[] getGames()
+    {
+        init("getGames");
+        return parseForIntArray(makeSoapCall());
+    }
+
+    public String[] listPlayers(int gameId)
+    {
+        init("listPlayers");
         request.addProperty("arg0", gameId);
-        makeSoapCall();
+        return parseForStringArray(makeSoapCall());
     }
 
-    @Override
-    public void reportCurrentStatus() {
-        //not used here
+    public String getGameName(int gameId)
+    {
+        init("getGameName");
+        request.addProperty("arg0", gameId);
+        return parseForString(makeSoapCall());
     }
 
-    @Override
-    public Integer[] getTurnStatus(int gameId) {
+    public boolean gameIsForming(int gameId)
+    {
+        init("gameIsForming");
+        request.addProperty("arg0", gameId);
+        return parseForBoolean(makeSoapCall());
+    }
+
+    public int playerIsCardCzar(int gameId, int playerId)
+    {
+        init("playerIsCardCzar");
+        request.addProperty("arg0", gameId);
+        request.addProperty("arg1", playerId);
+        return parseForInt(makeSoapCall());
+    }
+
+    public int getTurnPhase(int gameId)
+    {
+        init("getTurnPhase");
+        request.addProperty("arg0", gameId);
+        return parseForInt(makeSoapCall());
+    }
+
+    public String[] getHand(int gameId, int playerId)
+    {
+        init("getHand");
+        request.addProperty("arg0", gameId);
+        request.addProperty("arg1", playerId);
+        return parseForStringArray(makeSoapCall());
+    }
+
+    public String getBlackCard(int gameId)
+    {
+        init("getBlackCard");
+        request.addProperty("arg0", gameId);
+        return parseForString(makeSoapCall());
+    }
+
+    public Integer[] getTurnStatus(int gameId)
+    {
         init("getTurnStatus");
         request.addProperty("arg0", gameId);
         return parseForIntArray(makeSoapCall());
     }
 
-    @Override
-    public Integer[] getScore(int gameId) {
+    public Integer[] getScore(int gameId)
+    {
         init("getScore");
         request.addProperty("arg0", gameId);
         return parseForIntArray(makeSoapCall());
     }
 
-    @Override
-    public String[] roundSummary(int gameId) {
+    public String[] roundSummary(int gameId)
+    {
         init("roundSummary");
         request.addProperty("arg0", gameId);
         return parseForStringArray(makeSoapCall());
     }
 
-    @Override
-    public InGameData getGameData(int gameId, int playerId) {
-//        try {
+    public InGameData getGameData(int gameId, int playerId)
+    {
             init("getGameData");
             request.addProperty("arg0", gameId);
             request.addProperty("arg1", playerId);
@@ -286,9 +350,6 @@ public class NetworkMethods implements PartyCardsInterface{
             result = (SoapObject) result.getProperty(0);
             InGameData output = new InGameData();
 
-            //blackCard
-//        System.out.println("numberOfPlayersChoosing" + result.getProperty(6).toString());
-
             output.blackCard = result.getProperty(0).toString();
             output.roundText = result.getProperty(1).toString();
             output.playerId = Integer.parseInt(result.getProperty(2).toString());
@@ -296,29 +357,28 @@ public class NetworkMethods implements PartyCardsInterface{
             output.turnPhase = Integer.parseInt(result.getProperty(4).toString());
             output.turnNumber = Integer.parseInt(result.getProperty(5).toString());
             output.numberOfPlayersChoosing = Integer.parseInt(result.getProperty(6).toString());
+
             int handSize = result.getPropertyCount() - 7;
             output.hand = new String[handSize];
-            for (int i = 0; i < handSize; i++) {
+            for (int i = 0; i < handSize; i++)
+            {
                 output.hand[i] = result.getProperty(i + 7).toString();
             }
             return output;
-//        }
-//        catch (Exception e) {
-//            Log.e("NetworkMethods", "Error with getGameData()");
-//        }
-//        return null;
     }
 
-    @Override
-    public BasicGameData [] getBasicGameData() {
+    public BasicGameData [] getBasicGameData()
+    {
         init("getBasicGameData");
         SoapObject result = makeSoapCall();
-        try {
+        try
+        {
             result = (SoapObject) result.getProperty(0);
 
             int numGames = result.getPropertyCount();
             BasicGameData[] output = new BasicGameData[numGames];
-            for (int i = 0; i < numGames; i++) {
+            for (int i = 0; i < numGames; i++)
+            {
                 SoapObject container = (SoapObject) result.getProperty(i);
                 BasicGameData game = new BasicGameData();
                 game.gameId = Integer.parseInt(container.getProperty(0).toString());
@@ -326,7 +386,8 @@ public class NetworkMethods implements PartyCardsInterface{
                 game.gameIsNew = Boolean.parseBoolean(container.getProperty(2).toString());
                 int numPlayers = container.getPropertyCount() - 3;
                 game.playerNames = new String[numPlayers];
-                for (int j = 0; j < numPlayers; j++) {
+                for (int j = 0; j < numPlayers; j++)
+                {
                     game.playerNames[j] = container.getProperty(j + 3).toString();
                 }
                 output[i] = game;
@@ -334,15 +395,17 @@ public class NetworkMethods implements PartyCardsInterface{
             }
             return output;
         }
-        catch(Exception e) {
+        catch(Exception e)
+        {
             Log.e("NetworkMethods", "Error with getBasicGameData()");
         }
         return null;
     }
 
-    @Override
-    public BasicGameData getBasicGameDataSingleGame(int gameId) {
-        try {
+    public BasicGameData getBasicGameDataSingleGame(int gameId)
+    {
+        try
+        {
             init("getBasicGameDataSingleGame");
             request.addProperty("arg0", gameId);
 
@@ -353,15 +416,25 @@ public class NetworkMethods implements PartyCardsInterface{
             game.gameIsNew = Boolean.parseBoolean(result.getProperty(2).toString());
             int numPlayers = result.getPropertyCount() - 3;
             game.playerNames = new String[numPlayers];
-            for (int j = 0; j < numPlayers; j++) {
+            for (int j = 0; j < numPlayers; j++)
+            {
                 game.playerNames[j] = result.getProperty(j + 3).toString();
             }
 
             return game;
         }
-        catch (Exception e) {
+        catch (Exception e)
+        {
             Log.e("NetworkMethods", "Error with getBasicGameDataSingleGame()");
         }
         return null;
     }
+
+    @Override
+    public void reportCurrentStatus()
+    {
+        //not used here
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

@@ -1,13 +1,22 @@
 package com.csci491.PartyCards.NetworkTasks;
 
-
 import com.csci491.PartyCards.BasicGameData;
 import com.csci491.PartyCards.InGameData;
 
+// ====================================================================================================================
+// PartyCardsInterface.java
+// --------------------------------------------------------------------------------------------------------------------
+// Party Cards: Android Networking Project
+// CSCI-466: Networks
+// Jeff Arends, Lee Curran, Angela Gross, Andrew Meissner
+// Spring 2015
+// --------------------------------------------------------------------------------------------------------------------
+// Service Endpoint Interface
+// ====================================================================================================================
 
-//Service Endpoint Interface
-public interface PartyCardsInterface {
-
+public interface PartyCardsInterface
+{
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     public static final int GET_GAMES = 1;
     Integer [] getGames(); // return array of game names
@@ -69,5 +78,5 @@ public interface PartyCardsInterface {
     public static final int GET_BASIC_GAME_DATA_SINGLE_GAME = 20;
     BasicGameData getBasicGameDataSingleGame(int gameId);
 
-
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

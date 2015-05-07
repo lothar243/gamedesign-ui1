@@ -1,7 +1,21 @@
 package com.csci491.PartyCards;
 
+// ====================================================================================================================
+// InGameData.java
+// --------------------------------------------------------------------------------------------------------------------
+// Party Cards: Android Networking Project
+// CSCI-466: Networks
+// Jeff Arends, Lee Curran, Angela Gross, Andrew Meissner
+// Spring 2015
+// --------------------------------------------------------------------------------------------------------------------
+// Used for networking/multiplayer communication
+// ====================================================================================================================
 
-public class InGameData {
+public class InGameData
+{
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // INGAMEDATA ATTRIBUTES
     public String blackCard;
     public String roundText;
     public int playerId;
@@ -11,7 +25,15 @@ public class InGameData {
     public int numberOfPlayersChoosing;
     public String [] hand;
 
-    public String toString() {
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // ===============================================================================================================
+    // TOSTRING
+    // ---------------------------------------------------------------------------------------------------------------
+    // Basic toString() method that returns all attributes as a string
+    // ===============================================================================================================
+    public String toString()
+    {
         final String DELIM = ",";
         return "round: " + roundText +
                 ", PID: " + playerId +
@@ -20,11 +42,21 @@ public class InGameData {
                 ", Black: " + blackCard +
                 ", hand: " + arrayToString(hand);
     }
-    private String arrayToString(String [] input) {
+
+    // ===============================================================================================================
+    // ARRAYTOSTRING
+    // ---------------------------------------------------------------------------------------------------------------
+    // Helper method of toString() that prints out the given array
+    // ===============================================================================================================
+    private String arrayToString(String [] input)
+    {
         String output = "";
-        for(String s: input) {
+        for(String s: input)
+        {
             output += ", " + s;
         }
         return output;
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 }

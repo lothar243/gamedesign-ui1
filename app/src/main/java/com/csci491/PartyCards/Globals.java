@@ -24,6 +24,7 @@ public class Globals extends Application
 
     // GLOBAL VARIABLES
 
+    // basic game information
 	private final static String[] names = { "Collen", "Catarina", "Haydee", "Russell", "Prince", "Tarra", "Cara", "Christopher", "Don", "Larae", "Hye", "Sharee", "Ellen", "Pearline", "Yun", "Marna", "Rosia", "Brittanie", "Terrence", "Tamara", "Dennise", "Houston", "Korey", "Mollie", "Sherron", "Gerard", "Clare", "Jason", "Jasmin", "Karlene", "Irvin", "Wilber", "Mignon", "Willis", "Shela", "Bobby", "Susana", "Kristel", "Harriett", "Katrice", "Elfrieda", "Yvonne", "Krystyna", "Tyrone", "Randa", "Ying", "Annemarie", "Zoila", "Adalberto", "Monika", "Halley", "Thora", "Melodi", "Zetta", "Nicola", "Jan", "Alethea", "Hoa", "Theo", "Annie", "Dean", "Kaitlyn", "Stephani", "Hilton", "Valery", "Elke", "Kimber", "Muoi", "Effie", "Daphine", "Olive", "Carolyne", "Ashlea", "Casandra", "May", "Marvin", "Pansy", "Viola", "Ai", "Cecily", "Leone", "Jeff", "Karolyn", "Delcie", "Linsey", "Shawnee", "Tiffaney", "Coleman", "Dusty", "Len", "Collin", "Paula", "Carmella", "Trina", "Jolynn", "Cedric", "Lashandra", "Kittie", "Temeka", "Verdell" };
 	private final static Random myRand = new Random();
 	private final static int ROUND = 0;
@@ -44,20 +45,16 @@ public class Globals extends Application
 	private static boolean isGameWinner;
 	private static String winnerName;
 
+    // networking information
 	public static int multiplayerGameId;
 	public static int multiplayerGamePlayerId;
-
 	public static WorkerThread backgroundTaskThread;
 	public static int defaultMessage;
 	public static boolean windowIsInFocus;
 	public static final int multiplayerRefreshRate = 3000; // delay time between refreshing game data
-
-
-	//player status
-
 	public static String multiplayerServerIPAddress = "10.8.20.0";
 
-		///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
     // PRIVATE CONSTRUCTOR
 	private Globals() {
@@ -206,15 +203,19 @@ public class Globals extends Application
 		Globals.winnerName = winnerName;
 	}
 
-	public static void setUpBackgroundThread(Handler uiHandler) {
-		if(backgroundTaskThread == null) {
+	public static void setUpBackgroundThread(Handler uiHandler)
+    {
+		if(backgroundTaskThread == null)
+        {
 			backgroundTaskThread = new WorkerThread(uiHandler);
 			backgroundTaskThread.start();
-			while (backgroundTaskThread.getHandlerToMsgQueue() == null) {
+			while (backgroundTaskThread.getHandlerToMsgQueue() == null)
+            {
 				// delay until the backgroundThread gets set up
 			}
 		}
-		else {
+		else
+        {
 			backgroundTaskThread.setUiHandler(uiHandler);
 		}
 

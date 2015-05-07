@@ -7,7 +7,6 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 
-
 // ====================================================================================================================
 // MainActivity.java
 // --------------------------------------------------------------------------------------------------------------------
@@ -19,12 +18,8 @@ import android.widget.Button;
 // Handles the onCreate method for the MainActivity
 // ====================================================================================================================
 
-public class MainActivity extends Activity {
-	private static final boolean DEBUG_SOAP_REQUEST_RESPONSE = true;
-	private static final String MAIN_REQUEST_URL = "http://www.w3schools.com/webservices/tempconvert.asmx";
-	private static final String SOAP_ACTION = "http://www.w3schools.com/webservices/FahrenheitToCelsius";
-	private static final String NAMESPACE = "http://www.w3schools.com/webservices/";
-
+public class MainActivity extends Activity
+{
 	///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 	// ===============================================================================================================
@@ -32,7 +27,8 @@ public class MainActivity extends Activity {
 	// ---------------------------------------------------------------------------------------------------------------
 	// Prepares layout of the MainActivity
 	// ===============================================================================================================
-	protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState)
+    {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 

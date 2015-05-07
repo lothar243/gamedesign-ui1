@@ -19,15 +19,36 @@ import android.widget.Toast;
 
 import com.csci491.PartyCards.NetworkTasks.PartyCardsInterface;
 
+// ====================================================================================================================
+// ListMultiplayerGamesActivity.java
+// --------------------------------------------------------------------------------------------------------------------
+// Party Cards: Android Networking Project
+// CSCI-466: Networks
+// Jeff Arends, Lee Curran, Angela Gross, Andrew Meissner
+// Spring 2015
+// --------------------------------------------------------------------------------------------------------------------
+// Handles the UI listeners and other logic associated with the ListMultiplayerGamesActivity
+// ====================================================================================================================
 
-public class ListMultiplayerGamesActivity extends ListActivity {
+public class ListMultiplayerGamesActivity extends ListActivity
+{
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // LISTMULTIPLAYGAMESACTIVITY ATTRIBUTES
     public static Handler uiHandler;
     public static BasicAdapterForGameInfo gameNameAdapter;
     public static BasicGameData [] listedGames;
     static  Context appContext;
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // ===============================================================================================================
+    // ONCREATE()
+    // ---------------------------------------------------------------------------------------------------------------
+    // Prepares layout of the ListMultiplayerGamesActivity
+    // ===============================================================================================================
+    protected void onCreate(Bundle savedInstanceState)
+    {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_join_multiplayer_game);
         gameNameAdapter = new BasicAdapterForGameInfo(this);
@@ -56,17 +77,26 @@ public class ListMultiplayerGamesActivity extends ListActivity {
             }
         });
 
-        if(Globals.userName.equals("")) {
+        if(Globals.userName.equals(""))
+        {
             promptForUserName();
         }
 
 
     }
 
-    public static void updateUI() {
-        if(listedGames != null) {
+    // ===============================================================================================================
+    // UPDATEUI()
+    // ---------------------------------------------------------------------------------------------------------------
+    // Updates UI of Activity
+    // ===============================================================================================================
+    public static void updateUI()
+    {
+        if(listedGames != null)
+        {
             gameNameAdapter.clear();
-            for (BasicGameData game : listedGames) {
+            for (BasicGameData game : listedGames)
+            {
                 gameNameAdapter.add(game);
             }
             gameNameAdapter.notifyDataSetChanged();
@@ -74,21 +104,39 @@ public class ListMultiplayerGamesActivity extends ListActivity {
         }
     }
 
-    @Override
-    protected void onResume() {
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // ===============================================================================================================
+    // ONRESUME
+    // ---------------------------------------------------------------------------------------------------------------
+    // Handles what happens when the game is focused on again
+    // ===============================================================================================================
+    protected void onResume()
+    {
         super.onResume();
         Globals.windowIsInFocus = true;
         Globals.defaultMessage = PartyCardsInterface.GET_GAMES;
         Globals.backgroundTaskThread.getHandlerToMsgQueue().sendEmptyMessage(Globals.defaultMessage);
     }
 
-    @Override
-    protected void onPause() {
+    // ===============================================================================================================
+    // ONPAUSE
+    // ---------------------------------------------------------------------------------------------------------------
+    // Handles what happens when the game is paused
+    // ===============================================================================================================
+    protected void onPause()
+    {
         super.onPause();
         Globals.windowIsInFocus = false;
     }
 
-    protected void onListItemClick(ListView listView, View currentView, int position, long id) {
+    // ===============================================================================================================
+    // ONLISTITEMCLICK
+    // ---------------------------------------------------------------------------------------------------------------
+    // Helps join the selected game
+    // ===============================================================================================================
+    protected void onListItemClick(ListView listView, View currentView, int position, long id)
+    {
         Globals.multiplayerGameId = listedGames[position].gameId;
 
         Intent joinGameIntent = new Intent(ListMultiplayerGamesActivity.this, JoinGameActivity.class);
@@ -97,17 +145,26 @@ public class ListMultiplayerGamesActivity extends ListActivity {
         finish();
     }
 
-    private void createNewGameDialog() {
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // ===============================================================================================================
+    // CREATENEWGAMEDIALOG
+    // ---------------------------------------------------------------------------------------------------------------
+    // Sets up UI to create a new game
+    // ===============================================================================================================
+    private void createNewGameDialog()
+    {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Game Title");
 
-// Set up the input
+        // Set up the input
         final EditText input = new EditText(this);
-// Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
+
+        // Specify the type of input expected; this, for example, sets the input as a password, and will mask the text
         input.setInputType(InputType.TYPE_CLASS_TEXT);
         builder.setView(input);
 
-// Set up the buttons
+        // Set up the buttons
         builder.setPositiveButton("OK", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
@@ -127,7 +184,13 @@ public class ListMultiplayerGamesActivity extends ListActivity {
         builder.show();
     }
 
-    public void promptForUserName() {
+    // ===============================================================================================================
+    // PROMPTFORUSERNAME
+    // ---------------------------------------------------------------------------------------------------------------
+    // This method sets up the UI to prompt for a user name before joining a game
+    // ===============================================================================================================
+    public void promptForUserName()
+    {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setTitle("Before you can join, what is your username?");
 
@@ -154,7 +217,11 @@ public class ListMultiplayerGamesActivity extends ListActivity {
         builder.show();
     }
 
-    public boolean onCreateOptionsMenu(Menu menu) {
+    // ===============================================================================================================
+    // ONCREATEOPTIONSMENU
+    // ===============================================================================================================
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
         getMenuInflater().inflate(R.menu.ingame, menu);
         return true;
     }
@@ -164,9 +231,11 @@ public class ListMultiplayerGamesActivity extends ListActivity {
     // ---------------------------------------------------------------------------------------------------------------
     // This method handles item selection
     // ===============================================================================================================
-    public boolean onOptionsItemSelected(MenuItem item) {
+    public boolean onOptionsItemSelected(MenuItem item)
+    {
         AlertDialog.Builder builder;
-        switch (item.getItemId()) {
+        switch (item.getItemId())
+        {
             case R.id.set_server_ip:
 
                 builder = new AlertDialog.Builder(ListMultiplayerGamesActivity.this);
@@ -203,5 +272,7 @@ public class ListMultiplayerGamesActivity extends ListActivity {
         }
         return true;
     }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }

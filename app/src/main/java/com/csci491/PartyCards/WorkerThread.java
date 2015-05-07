@@ -7,7 +7,23 @@ import android.os.Message;
 import com.csci491.PartyCards.NetworkTasks.NetworkMethods;
 import com.csci491.PartyCards.NetworkTasks.PartyCardsInterface;
 
-public class WorkerThread extends Thread {
+// ====================================================================================================================
+// WorkerThread.java
+// --------------------------------------------------------------------------------------------------------------------
+// Party Cards: Android Networking Project
+// CSCI-466: Networks
+// Jeff Arends, Lee Curran, Angela Gross, Andrew Meissner
+// Spring 2015
+// --------------------------------------------------------------------------------------------------------------------
+// Worker thread that handles the networking
+// ====================================================================================================================
+
+public class WorkerThread extends Thread
+{
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // WORKER THREAD ATTRIBUTES
+
     public static final int CHANGE_IP_ADDRESS = -10;
     private final static String TAG = WorkerThread.class.getSimpleName(); // for the debugger
     static NetworkMethods networkMethods;
@@ -18,15 +34,15 @@ public class WorkerThread extends Thread {
     // to pass message back to itself
     private static Handler workerHandler;
 
-    public WorkerThread(Handler uiHandler) {
-        this.uiHandler = uiHandler;
-    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-    public void setUiHandler(Handler uiHandler) {
-        this.uiHandler = uiHandler;
-    }
-
-    public void run() {
+    // ===============================================================================================================
+    // RUN()
+    // ---------------------------------------------------------------------------------------------------------------
+    // Launches worker thread into action
+    // ===============================================================================================================
+    public void run()
+    {
         // Thread by default doesn't have a msg queue, to attach a msg queue to this thread
         Looper.prepare();
         networkMethods = new NetworkMethods();
@@ -35,17 +51,20 @@ public class WorkerThread extends Thread {
         workerHandler = new Handler() {
             @Override
             public void handleMessage(Message msg) {
-                switch (msg.what) {
+                switch (msg.what)
+                {
                     case PartyCardsInterface.CHOOSE_CARD:
                         MultiplayerGameActivity.numberOfPlayersSelecting = networkMethods.chooseCard(Globals.multiplayerGameId, Globals.multiplayerGamePlayerId, MultiplayerGameActivity.handIndex);
                         break;
                     case PartyCardsInterface.GET_GAME_DATA:
                         InGameData updatedData = networkMethods.getGameData(Globals.multiplayerGameId, Globals.multiplayerGamePlayerId);
-                        if(MultiplayerGameActivity.thisGame == null || MultiplayerGameActivity.thisGame.turnNumber < updatedData.turnNumber) {
+                        if(MultiplayerGameActivity.thisGame == null || MultiplayerGameActivity.thisGame.turnNumber < updatedData.turnNumber)
+                        {
                             MultiplayerGameActivity.previewPhase = true;
                         }
 
-                        if(MultiplayerGameActivity.previewPhase) {
+                        if(MultiplayerGameActivity.previewPhase)
+                        {
                             updatedData.hand = networkMethods.roundSummary(Globals.multiplayerGameId);
                         }
                         MultiplayerGameActivity.thisGame = updatedData;
@@ -70,7 +89,8 @@ public class WorkerThread extends Thread {
                         break;
                     case PartyCardsInterface.JOIN_GAME:
                         int playerId = networkMethods.joinGame(Globals.multiplayerGameId, Globals.userName);
-                        if(playerId >= 0) {
+                        if(playerId >= 0)
+                        {
                             Globals.multiplayerGamePlayerId = playerId;
                         }
                         break;
@@ -80,11 +100,13 @@ public class WorkerThread extends Thread {
                     default:
 
                         break;
-
                 }
+
                 // keep refreshing while the window is in focus
-                if(!getHandlerToMsgQueue().hasMessages(Globals.defaultMessage)) {
-                    if(Globals.windowIsInFocus) {
+                if(!getHandlerToMsgQueue().hasMessages(Globals.defaultMessage))
+                {
+                    if(Globals.windowIsInFocus)
+                    {
                         getHandlerToMsgQueue().sendEmptyMessageDelayed(Globals.defaultMessage, Globals.multiplayerRefreshRate);
                     }
                 }
@@ -92,15 +114,31 @@ public class WorkerThread extends Thread {
 
             }
         };
+
         // handles msgs/runnables receive to msgqueue, this will start a loop that listens msg receiving
         Looper.loop();
     }
 
-    // this keep refreshing the window while it's in focus
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    // GETTERS AND SETTERS FOR WORKER THREAD
+    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    // this keep refreshing the window while it's in focus
     public Handler getHandlerToMsgQueue() {
         return workerHandler;
     }
+
+    public WorkerThread(Handler uiHandler) {
+        this.uiHandler = uiHandler;
+    }
+
+    public void setUiHandler(Handler uiHandler) {
+        this.uiHandler = uiHandler;
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
 

@@ -7,45 +7,80 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.TextView;
-
 import java.util.ArrayList;
 
+// ====================================================================================================================
+// BasicAdapterForGameInfo.java
+// --------------------------------------------------------------------------------------------------------------------
+// Party Cards: Android Networking Project
+// CSCI-466: Networks
+// Jeff Arends, Lee Curran, Angela Gross, Andrew Meissner
+// Spring 2015
+// ====================================================================================================================
 
+public class BasicAdapterForGameInfo extends BaseAdapter
+{
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-public class BasicAdapterForGameInfo extends BaseAdapter {
+    // BASICADAPTERFORGAMEINFO ATTRIBUTES
     private LayoutInflater mInflater;
     private ArrayList<BasicGameData> games;
 
-    public BasicAdapterForGameInfo(Context context) {
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // BASICADAPTERFORGAMEINFO CONSTRUCTORS
+    public BasicAdapterForGameInfo(Context context)
+    {
         mInflater = LayoutInflater.from(context);
         clear();
     }
-    public BasicAdapterForGameInfo(Context context, ArrayList<BasicGameData> games) {
+    public BasicAdapterForGameInfo(Context context, ArrayList<BasicGameData> games)
+    {
         mInflater = LayoutInflater.from(context);
         this.games = games;
     }
 
-    @Override
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    // METHODS ADD AND CLEAR GAMES
+    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
+    public void add(BasicGameData additionalGame) {
+        games.add(additionalGame);
+    }
+
+    public void clear() {
+        games = new ArrayList<BasicGameData>();
+    }
+
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+    // GETTERS AND SETTERS FOR BASICADAPTERFORGAMEINFO
+    // \\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\\
+
     public int getCount() {
         return games.size();
     }
 
-    @Override
     public Object getItem(int position) {
         return games.get(position);
     }
 
-    @Override
     public long getItemId(int position) {
         return games.get(position).gameId;
     }
 
-    @Override
-    public View getView(int position, View convertView, ViewGroup parent) {
+    public View getView(int position, View convertView, ViewGroup parent)
+    {
         View view;
-        if(convertView == null) {
+        if(convertView == null)
+        {
             view = mInflater.inflate(R.layout.list_item, parent, false);
-        } else {
+        }
+        else
+        {
             view = convertView;
         }
 
@@ -59,12 +94,6 @@ public class BasicAdapterForGameInfo extends BaseAdapter {
         return view;
     }
 
-    public void add(BasicGameData additionalGame) {
-        games.add(additionalGame);
-    }
-
-    public void clear() {
-        games = new ArrayList<BasicGameData>();
-    }
+    ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 }
