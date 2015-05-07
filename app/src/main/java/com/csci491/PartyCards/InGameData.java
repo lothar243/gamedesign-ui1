@@ -8,7 +8,9 @@ package com.csci491.PartyCards;
 // Jeff Arends, Lee Curran, Angela Gross, Andrew Meissner
 // Spring 2015
 // --------------------------------------------------------------------------------------------------------------------
-// Used for networking/multiplayer communication
+// This InGameData is nothing more than a data type used to pass information about the current state of the game
+// that a player is already playing. It contains data such as the players current hand, the black card, and whether
+// or not the player is currently the card czar.
 // ====================================================================================================================
 
 public class InGameData

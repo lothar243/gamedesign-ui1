@@ -11,7 +11,8 @@ import com.csci491.PartyCards.InGameData;
 // Jeff Arends, Lee Curran, Angela Gross, Andrew Meissner
 // Spring 2015
 // --------------------------------------------------------------------------------------------------------------------
-// Service Endpoint Interface
+// This interface spells out the promised services. It is used both to ensure those functions have the correct
+// argument and output types.
 // ====================================================================================================================
 
 public interface PartyCardsInterface
